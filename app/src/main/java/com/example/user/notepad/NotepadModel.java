@@ -5,13 +5,15 @@ package com.example.user.notepad;
  */
 
 public class NotepadModel {
-    String notepadIndex;
+    private String notepadIndex;
 
-    public String getNotepadIndex() {
+    String getNotepadIndex() {
         return notepadIndex;
     }
 
-    public void setNotepadIndex(String notepadIndex) {
+    void setNotepadIndex(String notepadIndex) {
         this.notepadIndex = notepadIndex;
     }
+
+
 }

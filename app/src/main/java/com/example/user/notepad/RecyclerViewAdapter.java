@@ -1,5 +1,6 @@
 package com.example.user.notepad;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,10 @@ import java.util.Vector;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private Vector<String> datas;
     private LayoutInflater layoutInflater;
+
+    RecyclerViewAdapter(Context context){
+
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
