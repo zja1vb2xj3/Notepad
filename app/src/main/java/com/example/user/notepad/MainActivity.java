@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        memoActivityOperate_Button = (Button)findViewById(R.id.memoActivityOperate_Button);
+        memoActivityOperate_Button = (Button) findViewById(R.id.memoActivityOperate_Button);
         memoActivityOperate_Button.setOnClickListener(this::memoActivityOperate_ButtonClick);
 
 //        dbHelper.selectDataTableIndex();
@@ -37,22 +37,21 @@ public class MainActivity extends Activity {
 //        result = dbHelper.selectDataTableIndex();
 //        Log.i(CLASS_NAME, result);
         dbHelper = new DBHelper(this);
-        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-         dbHelper.getDataTableIndex();
-//        Log.i(CLASS_NAME, tableIndex.get(0));
-        adapter = new RecyclerViewAdapter(this, tableIndex);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-//        setNotifyWhenUseRecyclerView();
+        setNotifyWhenUseRecyclerView();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        setNotifyWhenUseRecyclerView();
+        setNotifyWhenUseRecyclerView();
     }
 
-    private void setNotifyWhenUseRecyclerView(){
+    private void setNotifyWhenUseRecyclerView() {
+        tableIndex = dbHelper.getDataTableIndex();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));//View를 언제 재사용하는지를 결정
+        adapter = new RecyclerViewAdapter(this, tableIndex);
         recyclerView.setAdapter(adapter);
     }
 

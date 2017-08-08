@@ -129,23 +129,21 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //DB select 데이터 분리
-    String getDataTableIndex(){
+    Vector<String> getDataTableIndex(){
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
         String result = "";
         Vector<String> datas = new Vector<>();
-        int size = 0;
         while (cursor.moveToNext()){
             result = cursor.getString(0) + ") " + cursor.getString(1) + "\n";
-            size++;
             datas.add(result);
         }
         for(int i = 0; i < datas.size(); i++){
             Log.i(CLASS_NAME, datas.get(i));
         }
 
-        return result;
+        return datas;
     }
 
 }
