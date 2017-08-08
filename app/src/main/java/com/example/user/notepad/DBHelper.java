@@ -60,7 +60,6 @@ public class DBHelper extends SQLiteOpenHelper {
         while (cursor.moveToNext()){
             result += cursor.getString(0) + "\n";
         }
-        Log.i(CLASS_NAME, result);
     }
 
 
@@ -93,7 +92,6 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put("data", data);
             db.insert(TABLE_NAME, null, values);
 
-            Log.i(CLASS_NAME, "Insert Sucess");
 
             return true;
         }
@@ -122,7 +120,6 @@ public class DBHelper extends SQLiteOpenHelper {
             size++;
         }
 
-        Log.i("select * from " + TABLE_NAME, result);
         Log.i(CLASS_NAME, "select Sucess");
 
         return size;

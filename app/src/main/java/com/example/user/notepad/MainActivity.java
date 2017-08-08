@@ -28,14 +28,6 @@ public class MainActivity extends Activity {
         memoActivityOperate_Button = (Button) findViewById(R.id.memoActivityOperate_Button);
         memoActivityOperate_Button.setOnClickListener(this::memoActivityOperate_ButtonClick);
 
-//        dbHelper.selectDataTableIndex();
-//        dbHelper.insertDataTableIndex("ㅎㅇ");
-//        String result = dbHelper.selectDataTableIndex();
-//        Log.i(CLASS_NAME, result);
-//
-//        dbHelper.deleteDataTableIndex("1");
-//        result = dbHelper.selectDataTableIndex();
-//        Log.i(CLASS_NAME, result);
         dbHelper = new DBHelper(this);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
