@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.Vector;
 
@@ -37,16 +38,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String data = datas.get(position);//0은 0이 들어가고 1에는 0하고 1이 같이들어감
-        holder.data_EditText.setText(data);
+        holder.data_TextView.setText(data);
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private EditText data_EditText;
+        private TextView data_TextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            data_EditText = (EditText)itemView.findViewById(R.id.data_EditText);
+            data_TextView = (TextView) itemView.findViewById(R.id.data_TextView);
             //클릭 시 확대 구현
         }
     }
