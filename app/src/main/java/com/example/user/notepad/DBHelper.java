@@ -14,7 +14,6 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "NotepadDB.db";
     private static final int DB_VERSION = 1;
-
     private final String TABLE_NAME = "DataTable";
     private final String CLASS_NAME = "DBHelper";
 
