@@ -1,6 +1,7 @@
 package com.example.user.notepad;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,15 +29,16 @@ public class NotepadActivity extends Activity {
     private void noteRegister_ButtonClick(View view) {
         String memoData = String.valueOf(note_EditText.getText());
         Log.i(CLASS_NAME, memoData);
+        //Pacelable 로 Main에 보내면서 MainActivity실행 후 RecyclerView에 데이터 추가됨
+
         boolean insertSign = dbHelper.insertDataTableIndex(memoData);
         if (insertSign == true){
             Toast.makeText(getApplicationContext(), "메모등록성공", Toast.LENGTH_LONG).show();
-            dbHelper.selectDataTableIndex();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
         }
         else
             Toast.makeText(getApplicationContext(), "메모등록실패", Toast.LENGTH_LONG).show();
-//        dbHelper.createTable();
-//        dbHelper.insertDataTableIndex(memoData);
-//        dbHelper.selectDataTableIndex();
     }
 }

@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.Vector;
+
 public class MainActivity extends Activity {
 
     private RecyclerView recyclerView;
@@ -16,6 +18,7 @@ public class MainActivity extends Activity {
     private DBHelper dbHelper;
     private final String CLASS_NAME = "MainActivity";
     private Button memoActivityOperate_Button;
+    private Vector<String> tableIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +28,6 @@ public class MainActivity extends Activity {
         memoActivityOperate_Button = (Button)findViewById(R.id.memoActivityOperate_Button);
         memoActivityOperate_Button.setOnClickListener(this::memoActivityOperate_ButtonClick);
 
-//        dbHelper = new DBHelper(this);
 //        dbHelper.selectDataTableIndex();
 //        dbHelper.insertDataTableIndex("ㅎㅇ");
 //        String result = dbHelper.selectDataTableIndex();
@@ -34,10 +36,31 @@ public class MainActivity extends Activity {
 //        dbHelper.deleteDataTableIndex("1");
 //        result = dbHelper.selectDataTableIndex();
 //        Log.i(CLASS_NAME, result);
-//
-//        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        adapter = new RecyclerViewAdapter(this);
+        dbHelper = new DBHelper(this);
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+         dbHelper.getDataTableIndex();
+//        Log.i(CLASS_NAME, tableIndex.get(0));
+        adapter = new RecyclerViewAdapter(this, tableIndex);
+
+//        setNotifyWhenUseRecyclerView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        setNotifyWhenUseRecyclerView();
+    }
+
+    private void setNotifyWhenUseRecyclerView(){
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));//View를 언제 재사용하는지를 결정
+        recyclerView.setAdapter(adapter);
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setNotifyWhenUseRecyclerView();
     }
 
     private void memoActivityOperate_ButtonClick(View view) {

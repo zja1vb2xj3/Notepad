@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.Vector;
+
 /**
  * Created by user on 2017-08-08.
  */
@@ -20,13 +22,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase db;
 
-    public DBHelper(Context context) {
+    DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
     private static DBHelper dbHelper;
 
-    public static DBHelper getInstance(Context context){
+    static DBHelper getInstance(Context context){
         if(dbHelper == null){
             dbHelper = new DBHelper(context);
         }
@@ -61,6 +63,8 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.i(CLASS_NAME, result);
     }
 
+
+
     void dropTable(){
         db = getWritableDatabase();
         db.rawQuery("DROP TABLE " + TABLE_NAME, new String[]{});
@@ -73,6 +77,12 @@ public class DBHelper extends SQLiteOpenHelper {
                         " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         " Data TEXT);";
         db.execSQL(createNotePadTable);
+    }
+
+    int getTableIdCount(){
+        int tableSize = selectDataTableIndex();
+
+        return tableSize;
     }
 
 
@@ -100,17 +110,42 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.i(CLASS_NAME, "delete Sucess");
     }
 
-    void selectDataTableIndex(){
+    int selectDataTableIndex(){
         db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ; ", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
         String result = "";
+        int size = 0;
         while (cursor.moveToNext()){
             result += cursor.getString(0) + ") "
                     + cursor.getString(1) + "\n";
+            size++;
         }
 
         Log.i("select * from " + TABLE_NAME, result);
         Log.i(CLASS_NAME, "select Sucess");
+
+        return size;
     }
+
+    //DB select 데이터 분리
+    String getDataTableIndex(){
+        db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+
+        String result = "";
+        Vector<String> datas = new Vector<>();
+        int size = 0;
+        while (cursor.moveToNext()){
+            result = cursor.getString(0) + ") " + cursor.getString(1) + "\n";
+            size++;
+            datas.add(result);
+        }
+        for(int i = 0; i < datas.size(); i++){
+            Log.i(CLASS_NAME, datas.get(i));
+        }
+
+        return result;
+    }
+
 }
