@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -23,6 +24,15 @@ public class DBHelper extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
+    private static DBHelper dbHelper;
+
+    public static DBHelper getInstance(Context context){
+        if(dbHelper == null){
+            dbHelper = new DBHelper(context);
+        }
+        return dbHelper;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createNotePadTable =
@@ -38,18 +48,49 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void dropTable(){
+    void inquiryTable(){
         db = getWritableDatabase();
-        db.execSQL("DROP TABLE " + TABLE_NAME);
+        Cursor cursor = db.rawQuery(
+                        "SELECT name " +
+                        "FROM sqlite_master "+
+                        "WHERE type = 'table'", null);
+        String result = "";
+        while (cursor.moveToNext()){
+            result += cursor.getString(0) + "\n";
+        }
+        Log.i(CLASS_NAME, result);
     }
 
-    void insertDataTableIndex(String data){
+    void dropTable(){
         db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("data",data);
-        db.insert(TABLE_NAME, null, values);
+        db.rawQuery("DROP TABLE " + TABLE_NAME, new String[]{});
+    }
 
-        Log.i(CLASS_NAME, "Insert Sucess");
+    void createTable(){
+        db = getWritableDatabase();
+        String createNotePadTable =
+                "CREATE TABLE " + TABLE_NAME +
+                        " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " Data TEXT);";
+        db.execSQL(createNotePadTable);
+    }
+
+
+    boolean insertDataTableIndex(String data){
+        try {
+            db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("data", data);
+            db.insert(TABLE_NAME, null, values);
+
+            Log.i(CLASS_NAME, "Insert Sucess");
+
+            return true;
+        }
+        catch (SQLiteException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
     void deleteDataTableIndex(String rowNumber){
@@ -59,16 +100,17 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.i(CLASS_NAME, "delete Sucess");
     }
 
-    String selectDataTableIndex(){
+    void selectDataTableIndex(){
         db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ; ", null);
 
         String result = "";
         while (cursor.moveToNext()){
             result += cursor.getString(0) + ") "
                     + cursor.getString(1) + "\n";
         }
+
+        Log.i("select * from " + TABLE_NAME, result);
         Log.i(CLASS_NAME, "select Sucess");
-        return result;
     }
 }

@@ -25,11 +25,8 @@ public class MainActivity extends Activity {
         memoActivityOperate_Button = (Button)findViewById(R.id.memoActivityOperate_Button);
         memoActivityOperate_Button.setOnClickListener(this::memoActivityOperate_ButtonClick);
 
-
-
-
 //        dbHelper = new DBHelper(this);
-//
+//        dbHelper.selectDataTableIndex();
 //        dbHelper.insertDataTableIndex("ㅎㅇ");
 //        String result = dbHelper.selectDataTableIndex();
 //        Log.i(CLASS_NAME, result);

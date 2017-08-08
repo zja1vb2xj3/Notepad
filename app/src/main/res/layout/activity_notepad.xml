@@ -22,4 +22,5 @@
         android:textSize="25dp"
         android:hint="여기에 메모를 등록하세요"
         android:id="@+id/note_EditText"/>
+
 </LinearLayout>
