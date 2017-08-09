@@ -18,10 +18,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private LayoutInflater layoutInflater;
     private int clickPosition;
     private ViewHolder viewHolder;
+    private Context context;
 
     RecyclerViewAdapter(Context context, Vector<String> datas){
         this.layoutInflater = LayoutInflater.from(context);
         this.datas = datas;
+        this.context = context;
     }
     @Override
     public int getItemCount() {
@@ -47,7 +49,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public void removeItemIndex(int position){
-        datas.remove(position-1);
+        datas.remove(position);
         viewHolder.notifyToRemoveViewItem(position);
     }
 
@@ -69,7 +71,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public boolean onLongClick(View view) {
-            onItemLongClickListener.onRemove(data_TextView.getText().toString(), getAdapterPosition());
+            String data= datas.get(getAdapterPosition());
+            onItemLongClickListener.onRemove(data, getAdapterPosition());
             clickPosition = getAdapterPosition();
             return true;
         }

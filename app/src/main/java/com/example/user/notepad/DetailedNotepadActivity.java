@@ -12,6 +12,9 @@ public class DetailedNotepadActivity extends Activity {
     private Button checkCompletion_Button;
     private EditText detailed_EditText;
     private final String CLASSNAME = "DetailedNotepadActivity";
+    private DBHelper dbHelper;
+    private int updatePosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +33,9 @@ public class DetailedNotepadActivity extends Activity {
             final String POSITION_KEY = "POSITIONKEY";
             String selectedItemIndex = intent.getExtras().getString(DATA_KEY);
             int position = intent.getExtras().getInt(POSITION_KEY);
+
+            updatePosition = position+1;
+
             Log.i("String", selectedItemIndex);
             Log.i("Int", String.valueOf(position));
             detailed_EditText.setText(selectedItemIndex);
@@ -37,8 +43,15 @@ public class DetailedNotepadActivity extends Activity {
     }
 
     private void checkCompletion_ButtonClick(View view) {
+        //item 업데이트 해야함
+
+        dbHelper = DBHelper.getInstance(this);
+        String updateData = detailed_EditText.getText().toString();
+        dbHelper.updateDataTableItem(updateData, updatePosition);
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }
+
+
 }

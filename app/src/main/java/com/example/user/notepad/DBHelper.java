@@ -37,11 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createNotePadTable =
-                        "CREATE TABLE " + TABLE_NAME +
-                        " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        " Data TEXT);";
-        db.execSQL(createNotePadTable);
+
     }
 
     @Override
@@ -62,6 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+
     void dropTable(){
         db = getWritableDatabase();
         db.rawQuery("DROP TABLE " + TABLE_NAME, new String[]{});
@@ -69,15 +66,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     void createTable(){
         db = getWritableDatabase();
-        String createNotePadTable =
-                "CREATE TABLE " + TABLE_NAME +
+        String query =
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
                         " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         " Data TEXT);";
-        db.execSQL(createNotePadTable);
+        db.execSQL(query);
     }
 
     int getTableIdCount(){
-        int tableSize = selectDataTableIndex();
+        int tableSize = selectDataTableAllIndex();
 
         return tableSize;
     }
@@ -90,7 +87,6 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put("data", data);
             db.insert(TABLE_NAME, null, values);
 
-
             return true;
         }
         catch (SQLiteException e){
@@ -99,25 +95,41 @@ public class DBHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    void deleteDataTableIndex(String rowNumber){
-        db = getWritableDatabase();
-        db.delete(TABLE_NAME, "_id = ?",  new String[]{rowNumber});
+    void deleteDataTableIndex(String data){
+        System.out.println(data);
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "DELETE FROM " + TABLE_NAME +
+                     " WHERE Data = '" + data + "'; ";
+        db.execSQL(sql);
+        db.close();
 
         Log.i(CLASS_NAME, "delete Sucess");
     }
+    void selectDataTableIndex(){
+        db = getReadableDatabase();
+        String sql = "Select * from " + TABLE_NAME + " Where Data";
+        Cursor cursor = db.rawQuery(sql, null);
+        String result = "";
+        if(cursor != null) {
+            while (cursor.moveToNext()) {
+                result += cursor.getString(0) + "\n";
+            }
+            Log.i("DataTable.Data", result);
+        }
+    }
 
-    int selectDataTableIndex(){
+    int selectDataTableAllIndex(){
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
         String result = "";
         int size = 0;
         while (cursor.moveToNext()){
-            result += cursor.getString(0) + ") "
-                    + cursor.getString(1) + "\n";
+                    result += cursor.getString(0) +
+                    cursor.getString(1) + "\n";
             size++;
         }
-
+        Log.i("selectDataTable", result);
         Log.i(CLASS_NAME, "select Sucess");
 
         return size;
@@ -131,12 +143,28 @@ public class DBHelper extends SQLiteOpenHelper {
         String result = "";
         Vector<String> datas = new Vector<>();
         while (cursor.moveToNext()){
-            result = cursor.getString(0) + ") " + cursor.getString(1) + "\n";
+            result = cursor.getString(1) + "\n";
             datas.add(result);
         }
 
         Log.i("datas", String.valueOf(datas));
         return datas;
+    }
+
+//    String getPrimaryKey(){
+//        db = getWritableDatabase();
+//        String query = "SELECT * FROM "+ TABLE_NAME + " Where = id ";
+//        Cursor cursor = db.rawQuery(query, null);
+//        String result = "";
+//        Vector<Vector> primaryKeys = new Vector<>();
+//    }
+
+    void updateDataTableItem(String data, int position){
+        db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("Data", data);
+        db.update(TABLE_NAME, values, "_id=?", new String[]{String.valueOf(position)});//table, values, whereClause, whereArgs
+
     }
 
 }

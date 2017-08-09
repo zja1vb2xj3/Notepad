@@ -17,7 +17,7 @@ public class RegisterNotepadActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notepad);
+        setContentView(R.layout.activity_register_notepad);
 
         note_EditText = (EditText) findViewById(R.id.note_EditText);
         noteRegister_Button = (Button) findViewById(R.id.noteRegister_Button);

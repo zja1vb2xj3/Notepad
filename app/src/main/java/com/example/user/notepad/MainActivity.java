@@ -19,7 +19,6 @@ public class MainActivity extends Activity {
     private DBHelper dbHelper;
     private final String CLASS_NAME = "MainActivity";
     private Button memoActivityOperate_Button;
-    private Vector<String> tableIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +28,19 @@ public class MainActivity extends Activity {
         memoActivityOperate_Button = (Button) findViewById(R.id.memoActivityOperate_Button);
         memoActivityOperate_Button.setOnClickListener(this::memoActivityOperate_ButtonClick);
 
-        dbHelper = new DBHelper(this);
+        dbHelper = DBHelper.getInstance(this);
+        dbHelper.createTable();
+        dbHelper.selectDataTableAllIndex();
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         setNotifyWhenUseRecyclerView();
+    }
+
+    private void memoActivityOperate_ButtonClick(View view) {
+        Intent intent = new Intent(this, RegisterNotepadActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
     }
 
     @Override
@@ -42,9 +50,7 @@ public class MainActivity extends Activity {
     }
 
     private void setNotifyWhenUseRecyclerView() {
-        tableIndex = dbHelper.getDataTableIndex();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));//View를 언제 재사용하는지를 결정
-        adapter = new RecyclerViewAdapter(this, tableIndex);
+        adapter = new RecyclerViewAdapter(this, dbHelper.getDataTableIndex());//dbHelper.getDataTableIndex 테이블 메모 데이터들
         adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemView(String itemData, int position) {
@@ -55,18 +61,16 @@ public class MainActivity extends Activity {
         adapter.setOnItemLongClickListener(new RecyclerViewAdapter.OnItemLongClickListener() {
             @Override
             public void onRemove(String itemData, int position) {
-                removeNotepadItem(itemData, position);
-                dbHelper.deleteDataTableIndex(String.valueOf(position+1));
-                Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
+                adapter.removeItemIndex(position);
+
+                String replace = itemData.replace(System.getProperty("line.separator"),"");
+                dbHelper.deleteDataTableIndex(replace);
             }
         });
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));//View를 언제 재사용하는지를 결정
         recyclerView.setAdapter(adapter);
     }
 
-    private void removeNotepadItem(String itemData, int position) {
-            adapter.removeItemIndex(position);
-    }
 
     private void showDetailedNotepad(String selectedData, int position){
         Intent intent = new Intent(this, DetailedNotepadActivity.class);
@@ -79,16 +83,4 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        setNotifyWhenUseRecyclerView();
-    }
-
-    private void memoActivityOperate_ButtonClick(View view) {
-        Intent intent = new Intent(this, RegisterNotepadActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-    }
 }
