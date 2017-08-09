@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
     }
 
     private void memoActivityOperate_ButtonClick(View view) {
-        Intent intent = new Intent(this, NotepadActivity.class);
+        Intent intent = new Intent(this, RegisterNotepadActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }

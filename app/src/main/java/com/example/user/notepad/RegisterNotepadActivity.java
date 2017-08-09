@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class NotepadActivity extends Activity {
+public class RegisterNotepadActivity extends Activity {
     private Button noteRegister_Button;
     private EditText note_EditText;
     private DBHelper dbHelper;
