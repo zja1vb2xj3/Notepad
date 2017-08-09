@@ -136,10 +136,8 @@ public class DBHelper extends SQLiteOpenHelper {
             result = cursor.getString(0) + ") " + cursor.getString(1) + "\n";
             datas.add(result);
         }
-        for(int i = 0; i < datas.size(); i++){
-            Log.i(CLASS_NAME, datas.get(i));
-        }
 
+        Log.i("datas", String.valueOf(datas));
         return datas;
     }
 

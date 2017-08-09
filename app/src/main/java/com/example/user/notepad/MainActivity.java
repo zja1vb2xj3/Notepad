@@ -47,12 +47,22 @@ public class MainActivity extends Activity {
         adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemView(String itemData, int position) {
-                Log.i("ClickIndex", itemData);
-                Log.i("ClickPosition", String.valueOf(position));
+                showDetailedNotepad(itemData, position);
             }
         });
 
         recyclerView.setAdapter(adapter);
+    }
+
+    private void showDetailedNotepad(String selectedData, int position){
+        Intent intent = new Intent(this, DetailedNotepadActivity.class);
+        final String DATA_KEY = "DATAKEY";
+        final String POSITION_KEY = "POSITIONKEY";
+
+        intent.putExtra(DATA_KEY, selectedData);
+        intent.putExtra(POSITION_KEY, position);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
     }
 
 
