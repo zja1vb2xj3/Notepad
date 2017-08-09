@@ -44,6 +44,14 @@ public class MainActivity extends Activity {
         tableIndex = dbHelper.getDataTableIndex();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));//View를 언제 재사용하는지를 결정
         adapter = new RecyclerViewAdapter(this, tableIndex);
+        adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemView(String itemData, int position) {
+                Log.i("ClickIndex", itemData);
+                Log.i("ClickPosition", String.valueOf(position));
+            }
+        });
+
         recyclerView.setAdapter(adapter);
     }
 
