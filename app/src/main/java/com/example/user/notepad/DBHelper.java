@@ -62,8 +62,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-
-
     void dropTable(){
         db = getWritableDatabase();
         db.rawQuery("DROP TABLE " + TABLE_NAME, new String[]{});

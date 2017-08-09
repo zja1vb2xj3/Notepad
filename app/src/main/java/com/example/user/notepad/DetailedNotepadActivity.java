@@ -28,10 +28,11 @@ public class DetailedNotepadActivity extends Activity {
         if(intent != null){
             final String DATA_KEY = "DATAKEY";
             final String POSITION_KEY = "POSITIONKEY";
-            String data = intent.getExtras().getString(DATA_KEY);
+            String selectedItemIndex = intent.getExtras().getString(DATA_KEY);
             int position = intent.getExtras().getInt(POSITION_KEY);
-            Log.i("String", data);
+            Log.i("String", selectedItemIndex);
             Log.i("Int", String.valueOf(position));
+            detailed_EditText.setText(selectedItemIndex);
         }
     }
 

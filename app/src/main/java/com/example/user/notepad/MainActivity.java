@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.Vector;
 
@@ -51,7 +52,20 @@ public class MainActivity extends Activity {
             }
         });
 
+        adapter.setOnItemLongClickListener(new RecyclerViewAdapter.OnItemLongClickListener() {
+            @Override
+            public void onRemove(String itemData, int position) {
+                removeNotepadItem(itemData, position);
+                dbHelper.deleteDataTableIndex(String.valueOf(position+1));
+                Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
+            }
+        });
+
         recyclerView.setAdapter(adapter);
+    }
+
+    private void removeNotepadItem(String itemData, int position) {
+            adapter.removeItemIndex(position);
     }
 
     private void showDetailedNotepad(String selectedData, int position){

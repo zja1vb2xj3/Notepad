@@ -17,6 +17,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Vector<String> datas;
     private LayoutInflater layoutInflater;
     private int clickPosition;
+    private ViewHolder viewHolder;
+
     RecyclerViewAdapter(Context context, Vector<String> datas){
         this.layoutInflater = LayoutInflater.from(context);
         this.datas = datas;
@@ -29,7 +31,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.recyclerview_row, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        viewHolder = new ViewHolder(view);
 
         return viewHolder;
     }
@@ -40,6 +42,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.data_TextView.setText(data);
     }
 
+    public int getClickPosition() {
+        return clickPosition;
+    }
+
+    public void removeItemIndex(int position){
+        datas.remove(position-1);
+        viewHolder.notifyToRemoveViewItem(position);
+    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -59,7 +69,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public boolean onLongClick(View view) {
+            onItemLongClickListener.onRemove(data_TextView.getText().toString(), getAdapterPosition());
+            clickPosition = getAdapterPosition();
             return true;
+        }
+
+        public void notifyToRemoveViewItem(int position) {
+            notifyItemRemoved(position);
         }
     }//end ViewHolder
 
@@ -80,7 +96,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     interface OnItemLongClickListener {
-        void onRemove(String itemData);
+        void onRemove(String itemData, int position);
     }
 
 }
