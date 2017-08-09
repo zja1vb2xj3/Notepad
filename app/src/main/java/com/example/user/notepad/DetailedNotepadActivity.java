@@ -44,13 +44,14 @@ public class DetailedNotepadActivity extends Activity {
 
     private void checkCompletion_ButtonClick(View view) {
         //item 업데이트 해야함
-
         dbHelper = DBHelper.getInstance(this);
         String updateData = detailed_EditText.getText().toString();
-        dbHelper.updateDataTableItem(updateData, updatePosition);
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
+        int id = dbHelper.selectId(updateData);
+
+
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//        startActivity(intent);
     }
 
 

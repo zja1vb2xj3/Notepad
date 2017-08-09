@@ -28,8 +28,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper dbHelper;
 
-    static DBHelper getInstance(Context context){
-        if(dbHelper == null){
+    static DBHelper getInstance(Context context) {
+        if (dbHelper == null) {
             dbHelper = new DBHelper(context);
         }
         return dbHelper;
@@ -46,41 +46,41 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void inquiryTable(){
+    void inquiryTable() {
         db = getWritableDatabase();
         Cursor cursor = db.rawQuery(
-                        "SELECT name " +
-                        "FROM sqlite_master "+
+                "SELECT name " +
+                        "FROM sqlite_master " +
                         "WHERE type = 'table'", null);
         String result = "";
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             result += cursor.getString(0) + "\n";
         }
     }
 
 
-    void dropTable(){
+    void dropTable() {
         db = getWritableDatabase();
         db.rawQuery("DROP TABLE " + TABLE_NAME, new String[]{});
     }
 
-    void createTable(){
+    void createTable() {
         db = getWritableDatabase();
         String query =
                 "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                        " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         " Data TEXT);";
         db.execSQL(query);
     }
 
-    int getTableIdCount(){
+    int getTableIdCount() {
         int tableSize = selectDataTableAllIndex();
 
         return tableSize;
     }
 
 
-    boolean insertDataTableIndex(String data){
+    boolean insertDataTableIndex(String data) {
         try {
             db = getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -88,29 +88,29 @@ public class DBHelper extends SQLiteOpenHelper {
             db.insert(TABLE_NAME, null, values);
 
             return true;
-        }
-        catch (SQLiteException e){
+        } catch (SQLiteException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    void deleteDataTableIndex(String data){
+    void deleteDataTableIndex(String data) {
         System.out.println(data);
         SQLiteDatabase db = getReadableDatabase();
         String sql = "DELETE FROM " + TABLE_NAME +
-                     " WHERE Data = '" + data + "'; ";
+                " WHERE Data = '" + data + "'; ";
         db.execSQL(sql);
         db.close();
 
         Log.i(CLASS_NAME, "delete Sucess");
     }
-    void selectDataTableIndex(){
+
+    void selectDataTableIndex() {
         db = getReadableDatabase();
         String sql = "Select * from " + TABLE_NAME + " Where Data";
-        Cursor cursor = db.rawQuery(sql, null);
+        Cursor cursor = db.query(TABLE_NAME, null, null, new String[]{"Data"},null,null,null,null);
         String result = "";
-        if(cursor != null) {
+        if (cursor != null) {
             while (cursor.moveToNext()) {
                 result += cursor.getString(0) + "\n";
             }
@@ -118,31 +118,14 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    int selectDataTableAllIndex(){
-        db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-
-        String result = "";
-        int size = 0;
-        while (cursor.moveToNext()){
-                    result += cursor.getString(0) +
-                    cursor.getString(1) + "\n";
-            size++;
-        }
-        Log.i("selectDataTable", result);
-        Log.i(CLASS_NAME, "select Sucess");
-
-        return size;
-    }
-
     //DB select 데이터 분리
-    Vector<String> getDataTableIndex(){
+    Vector<String> getDataTableIndex() {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
         String result = "";
         Vector<String> datas = new Vector<>();
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             result = cursor.getString(1) + "\n";
             datas.add(result);
         }
@@ -151,20 +134,56 @@ public class DBHelper extends SQLiteOpenHelper {
         return datas;
     }
 
-//    String getPrimaryKey(){
+    //    String getPrimaryKey(){
 //        db = getWritableDatabase();
 //        String query = "SELECT * FROM "+ TABLE_NAME + " Where = id ";
 //        Cursor cursor = db.rawQuery(query, null);
 //        String result = "";
 //        Vector<Vector> primaryKeys = new Vector<>();
 //    }
+//
+//    void updateDataTableItem(String beforeValue){
+//        db = getWritableDatabase();
+//        //변경 데이터를 받아서 변경 후 데이터로 변경
+//        ContentValues values = new ContentValues();
+//        values.put("Data", beforeValue);
+//        db.update(TABLE_NAME, values, "_id=?", new String[]{String.valueOf(position)});//table, values, whereClause, whereArgs
+//
+//    }
+//
+    int selectId(String data) {
+        db = getReadableDatabase();
+        int primaryKey = 0;
+        String replace = data.replace(System.getProperty("line.separator"),"");
 
-    void updateDataTableItem(String data, int position){
-        db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("Data", data);
-        db.update(TABLE_NAME, values, "_id=?", new String[]{String.valueOf(position)});//table, values, whereClause, whereArgs
+        String sql = "Select id From " + TABLE_NAME + " Where Data Like '"+ replace +"';";
 
+        Cursor cursor = db.rawQuery(sql, null);
+        String id = "";
+        while (cursor.moveToNext()){
+            id = cursor.getString(0);
+        }
+        System.out.println(id);
+        db.close();
+
+        return Integer.parseInt(id);
+    }
+
+    int selectDataTableAllIndex() {
+        db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+
+        String result = "";
+        int size = 0;
+        while (cursor.moveToNext()) {
+            result += cursor.getString(0) +
+                    cursor.getString(1) + "\n";
+            size++;
+        }
+        Log.i("selectDataTable", result);
+        Log.i(CLASS_NAME, "select Sucess");
+
+        return size;
     }
 
 }
