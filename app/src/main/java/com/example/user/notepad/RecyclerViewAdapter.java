@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -14,11 +15,11 @@ import java.util.Vector;
  */
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    private Vector<String> datas;
+    private ArrayList<String> datas;
     private LayoutInflater layoutInflater;
     private ViewHolder viewHolder;
 
-    RecyclerViewAdapter(Context context, Vector<String> datas){
+    RecyclerViewAdapter(Context context, ArrayList<String> datas){
         this.layoutInflater = LayoutInflater.from(context);
         this.datas = datas;
 

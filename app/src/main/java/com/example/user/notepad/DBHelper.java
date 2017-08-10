@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -47,12 +48,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //삽입된 데이터 반환
-    Vector<String> getDataTableIndex() {
+    ArrayList<String> getDataTableIndex() {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
         String result = "";
-        Vector<String> datas = new Vector<>();
+        ArrayList<String> datas = new ArrayList<>();
         while (cursor.moveToNext()) {
             result = cursor.getString(1) + "\n";
             datas.add(result);
