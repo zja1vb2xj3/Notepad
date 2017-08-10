@@ -134,14 +134,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    //    String getPrimaryKey(){
-//        db = getWritableDatabase();
-//        String query = "SELECT * FROM "+ TABLE_NAME + " Where = id ";
-//        Cursor cursor = db.rawQuery(query, null);
-//        String result = "";
-//        Vector<Vector> primaryKeys = new Vector<>();
-//    }
-//
     void updateDataTableItem(String data, int position){
         db = getWritableDatabase();
 
