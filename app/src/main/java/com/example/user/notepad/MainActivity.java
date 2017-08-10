@@ -8,9 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import java.util.Vector;
 
 public class MainActivity extends Activity {
 
@@ -25,6 +23,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.i(CLASS_NAME, "onCreate");
+
         memoActivityOperate_Button = (Button) findViewById(R.id.memoActivityOperate_Button);
         memoActivityOperate_Button.setOnClickListener(this::memoActivityOperate_ButtonClick);
 
@@ -43,13 +42,12 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setNotifyWhenUseRecyclerView();
+    }
 
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        setNotifyWhenUseRecyclerView();
-//    }
-//
     @Override
     protected void onResume() {
         super.onResume();
@@ -66,6 +64,13 @@ public class MainActivity extends Activity {
                 showDetailedNotepad(textViewStr);
             }
         });
+
+        adapter.setOnItemLongClickListener(new RecyclerViewAdapter.OnItemLongClickListener() {
+            @Override
+            public void itemLongClick(String textViewStr) {
+                dbHelper.deleteDataTableIndex(textViewStr);
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));//View를 언제 재사용하는지를 결정
         recyclerView.setAdapter(adapter);
     }//end setNotifyWhenUseRecyclerView
@@ -76,27 +81,7 @@ public class MainActivity extends Activity {
         intent.putExtra(DATA_KEY, selectedData);
         startActivityForResult(intent, ModifyRequest);
     }//end showDetailedNotepad
-//
-//        adapter.setOnItemLongClickListener(new RecyclerViewAdapter.OnItemLongClickListener() {
-//            @Override
-//            public void (String itemData, int position) {
-//                adapter.removeItemIndex(position);
-//
-//                String replace = itemData.replace(System.getProperty("line.separator"),"");
-//                dbHelper.deleteDataTableIndex(replace);
-//            }
-//        });
-//
-//    }
-//
-//
 
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if(requestCode == RESULT_OK || requestCode == ModifyRequest){
-//
-//        }
-//    }
+
 
 }

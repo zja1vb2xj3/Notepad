@@ -16,17 +16,16 @@ import java.util.Vector;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private Vector<String> datas;
     private LayoutInflater layoutInflater;
-    private int clickPosition;
     private ViewHolder viewHolder;
-    private Context context;
 
     RecyclerViewAdapter(Context context, Vector<String> datas){
         this.layoutInflater = LayoutInflater.from(context);
         this.datas = datas;
 
         System.out.println("getDBIndex" + this.datas);
-        this.context = context;
     }
+
+
     @Override
     public int getItemCount() {
         return datas.size();
@@ -45,15 +44,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String data = datas.get(position);//0은 0이 들어가고 1에는 0하고 1이 같이들어감
         String replace = data.replace(System.getProperty("line.separator"),"");
         holder.data_TextView.setText(replace);
-    }
-
-    public int getClickPosition() {
-        return clickPosition;
-    }
-
-    public void removeItemIndex(int position){
-        datas.remove(position);
-        viewHolder.notifyToRemoveViewItem(position);
     }
 
 
@@ -76,16 +66,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public boolean onLongClick(View view) {
-//            String data= datas.get(getAdapterPosition());
-//            onItemLongClickListener.(data, getAdapterPosition());
-//            clickPosition = getAdapterPosition();
+            String data_TextViewStr = data_TextView.getText().toString();
+            onItemLongClickListener.itemLongClick(data_TextViewStr);
+            removeViewItem(getAdapterPosition());
+            System.out.println("getAdapterPosition : " + getAdapterPosition());
+
             return true;
         }
 
-        public void notifyToRemoveViewItem(int position) {
-            notifyItemRemoved(position);
-        }
     }//end ViewHolder
+
+    private void removeViewItem(int position){
+        datas.remove(position);
+        notifyItemRemoved(position);
+    }
 
     private OnItemLongClickListener onItemLongClickListener;
 
@@ -100,11 +94,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     interface OnItemClickListener {
-        void itemOnClick(String itemData);
+        void itemOnClick(String textViewStr);
     }
 
     interface OnItemLongClickListener {
-        void itemLongClick(String itemData);
+        void itemLongClick(String textViewStr);
     }
 
 }

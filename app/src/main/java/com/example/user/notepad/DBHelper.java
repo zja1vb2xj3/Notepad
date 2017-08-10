@@ -112,7 +112,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     void deleteDataTableIndex(String data) {
         System.out.println(data);
-        SQLiteDatabase db = getReadableDatabase();
+        db = getWritableDatabase();
         String sql = "DELETE FROM " + TABLE_NAME +
                 " WHERE Data = '" + data + "'; ";
         db.execSQL(sql);
