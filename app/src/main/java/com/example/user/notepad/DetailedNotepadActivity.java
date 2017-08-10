@@ -7,13 +7,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class DetailedNotepadActivity extends Activity {
     private Button checkCompletion_Button;
     private EditText detailed_EditText;
     private final String CLASSNAME = "DetailedNotepadActivity";
     private DBHelper dbHelper;
-    private int updatePosition;
+
     private String beforeModifyData;
     private String selectedItemIndex;
 
@@ -43,31 +44,45 @@ public class DetailedNotepadActivity extends Activity {
     private void getMainActivityData(){
         Intent intent = getIntent();
         if(intent != null){
-            final String DATA_KEY = "DATAKEY";
-            final String POSITION_KEY = "POSITIONKEY";
+            final String DATA_KEY = "DATA_KEY";
             selectedItemIndex = intent.getExtras().getString(DATA_KEY);
-            int position = intent.getExtras().getInt(POSITION_KEY);
-
-            updatePosition = position+1;
 
             Log.i("String", selectedItemIndex);
-            Log.i("Int", String.valueOf(position));
             detailed_EditText.setText(selectedItemIndex);
         }
+        else
+            Toast.makeText(getApplicationContext(),"Intent 가 null 입니다.",Toast.LENGTH_LONG).show();
     }
     private void checkCompletion_ButtonClick(View view) {
-
         dbHelper = DBHelper.getInstance(this);
         //해당 id 찾음
-        int id = dbHelper.selectId(selectedItemIndex);
-        System.out.println(id);
 
-        String updateData = detailed_EditText.getText().toString();
+        int findId = selectItemFindId(selectedItemIndex);
+        if(findId == -1){
+            Toast.makeText(getApplicationContext(),"찾은 id 오류", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        else{
+            String upDateTextStr= detailed_EditText.getText().toString();
+            dbHelper.updateDataTableItem(upDateTextStr, findId);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            Toast.makeText(getApplicationContext(),"upDate 성공", Toast.LENGTH_LONG).show();
+        }
 
-        dbHelper.updateDataTableItem(updateData, id);
+    }
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+    private int selectItemFindId(String selectedItemIndex){
+        int id = 0;
+        id = dbHelper.selectId(selectedItemIndex);
+        //id가 0이라면 잘못 찾은거
+        if(id == 0)
+        return -1;
+
+        else
+            return id;
+
     }
 
 

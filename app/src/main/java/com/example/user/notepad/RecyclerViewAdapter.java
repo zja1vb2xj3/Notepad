@@ -23,6 +23,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     RecyclerViewAdapter(Context context, Vector<String> datas){
         this.layoutInflater = LayoutInflater.from(context);
         this.datas = datas;
+
+        System.out.println("getDBIndex" + this.datas);
         this.context = context;
     }
     @Override
@@ -41,7 +43,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String data = datas.get(position);//0은 0이 들어가고 1에는 0하고 1이 같이들어감
-        holder.data_TextView.setText(data);
+        String replace = data.replace(System.getProperty("line.separator"),"");
+        holder.data_TextView.setText(replace);
     }
 
     public int getClickPosition() {
@@ -66,14 +69,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View view) {
-            onItemClickListener.onItemView(data_TextView.getText().toString(), getAdapterPosition());
+            //클릭 시 data_TextView의 텍스트를 받아와 할당
+            String data_TextViewStr = data_TextView.getText().toString();
+            onItemClickListener.itemOnClick(data_TextViewStr);
         }
 
         @Override
         public boolean onLongClick(View view) {
-            String data= datas.get(getAdapterPosition());
-            onItemLongClickListener.onRemove(data, getAdapterPosition());
-            clickPosition = getAdapterPosition();
+//            String data= datas.get(getAdapterPosition());
+//            onItemLongClickListener.(data, getAdapterPosition());
+//            clickPosition = getAdapterPosition();
             return true;
         }
 
@@ -95,11 +100,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     interface OnItemClickListener {
-        void onItemView(String itemData, int position);
+        void itemOnClick(String itemData);
     }
 
     interface OnItemLongClickListener {
-        void onRemove(String itemData, int position);
+        void itemLongClick(String itemData);
     }
 
 }

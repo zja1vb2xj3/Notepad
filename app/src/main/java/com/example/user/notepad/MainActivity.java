@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.i(CLASS_NAME, "onCreate");
         memoActivityOperate_Button = (Button) findViewById(R.id.memoActivityOperate_Button);
         memoActivityOperate_Button.setOnClickListener(this::memoActivityOperate_ButtonClick);
 
@@ -43,15 +43,17 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
+
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        setNotifyWhenUseRecyclerView();
+//    }
+//
     @Override
     protected void onResume() {
         super.onResume();
-        setNotifyWhenUseRecyclerView();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
+        Log.i(CLASS_NAME, "onResume");
         setNotifyWhenUseRecyclerView();
     }
 
@@ -59,39 +61,42 @@ public class MainActivity extends Activity {
         adapter = new RecyclerViewAdapter(this, dbHelper.getDataTableIndex());//dbHelper.getDataTableIndex 테이블 메모 데이터들
         adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemView(String itemData, int position) {
-                showDetailedNotepad(itemData, position);
-            }
-        });
-
-        adapter.setOnItemLongClickListener(new RecyclerViewAdapter.OnItemLongClickListener() {
-            @Override
-            public void onRemove(String itemData, int position) {
-                adapter.removeItemIndex(position);
-
-                String replace = itemData.replace(System.getProperty("line.separator"),"");
-                dbHelper.deleteDataTableIndex(replace);
+            public void itemOnClick(String textViewStr) {
+                Log.i("textviewStr", textViewStr);
+                showDetailedNotepad(textViewStr);
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));//View를 언제 재사용하는지를 결정
         recyclerView.setAdapter(adapter);
-    }
+    }//end setNotifyWhenUseRecyclerView
 
-
-    private void showDetailedNotepad(String selectedData, int position){
+    private void showDetailedNotepad(String selectedData){
         Intent intent = new Intent(this, DetailedNotepadActivity.class);
-        final String DATA_KEY = "DATAKEY";
-        final String POSITION_KEY = "POSITIONKEY";
-
+        final String DATA_KEY = "DATA_KEY";
         intent.putExtra(DATA_KEY, selectedData);
-        intent.putExtra(POSITION_KEY, position);
         startActivityForResult(intent, ModifyRequest);
-    }
+    }//end showDetailedNotepad
+//
+//        adapter.setOnItemLongClickListener(new RecyclerViewAdapter.OnItemLongClickListener() {
+//            @Override
+//            public void (String itemData, int position) {
+//                adapter.removeItemIndex(position);
+//
+//                String replace = itemData.replace(System.getProperty("line.separator"),"");
+//                dbHelper.deleteDataTableIndex(replace);
+//            }
+//        });
+//
+//    }
+//
+//
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == RESULT_OK || requestCode == ModifyRequest){
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if(requestCode == RESULT_OK || requestCode == ModifyRequest){
+//
+//        }
+//    }
 
-        }
-    }
 }

@@ -18,7 +18,7 @@ public class RegisterNotepadActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_notepad);
-
+        Log.i(CLASS_NAME, "onCreate");
         note_EditText = (EditText) findViewById(R.id.note_EditText);
         noteRegister_Button = (Button) findViewById(R.id.noteRegister_Button);
         noteRegister_Button.setOnClickListener(this::noteRegister_ButtonClick);
@@ -30,14 +30,19 @@ public class RegisterNotepadActivity extends Activity {
         String memoData = String.valueOf(note_EditText.getText());
         Log.i(CLASS_NAME, memoData);
         //Pacelable 로 Main에 보내면서 MainActivity실행 후 RecyclerView에 데이터 추가됨
-
-        boolean insertSign = dbHelper.insertDataTableIndex(memoData);
-        if (insertSign == true){
-            Toast.makeText(getApplicationContext(), "메모등록성공", Toast.LENGTH_LONG).show();
+        if(memoData.equals("") || memoData == null){
+            Toast.makeText(getApplicationContext(), "입력한 데이터가 없습니다.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
-        else
-            Toast.makeText(getApplicationContext(), "메모등록실패", Toast.LENGTH_LONG).show();
-    }
+        else{
+            boolean insertSign = dbHelper.insertDataTableIndex(memoData);
+            if (insertSign == true) {
+                Toast.makeText(getApplicationContext(), "메모등록성공", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            } else
+                Toast.makeText(getApplicationContext(), "메모등록실패", Toast.LENGTH_LONG).show();
+        }
+    }//end 등록버튼 클릭
 }

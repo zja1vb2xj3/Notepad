@@ -46,6 +46,36 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //삽입된 데이터 반환
+    Vector<String> getDataTableIndex() {
+        db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+
+        String result = "";
+        Vector<String> datas = new Vector<>();
+        while (cursor.moveToNext()) {
+            result = cursor.getString(1) + "\n";
+            datas.add(result);
+        }
+
+        return datas;
+    }
+    //데이터 삽입
+    boolean insertDataTableIndex(String data) {
+        try {
+            db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("data", data);
+            db.insert(TABLE_NAME, null, values);
+
+            return true;
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
     void inquiryTable() {
         db = getWritableDatabase();
         Cursor cursor = db.rawQuery(
@@ -80,20 +110,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    boolean insertDataTableIndex(String data) {
-        try {
-            db = getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("data", data);
-            db.insert(TABLE_NAME, null, values);
-
-            return true;
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     void deleteDataTableIndex(String data) {
         System.out.println(data);
         SQLiteDatabase db = getReadableDatabase();
@@ -116,22 +132,6 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             Log.i("DataTable.Data", result);
         }
-    }
-
-    //DB select 데이터 분리
-    Vector<String> getDataTableIndex() {
-        db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-
-        String result = "";
-        Vector<String> datas = new Vector<>();
-        while (cursor.moveToNext()) {
-            result = cursor.getString(1) + "\n";
-            datas.add(result);
-        }
-
-        Log.i("datas", String.valueOf(datas));
-        return datas;
     }
 
     //    String getPrimaryKey(){
