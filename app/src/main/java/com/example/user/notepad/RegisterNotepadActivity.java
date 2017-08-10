@@ -35,7 +35,6 @@ public class RegisterNotepadActivity extends Activity {
         if (insertSign == true){
             Toast.makeText(getApplicationContext(), "메모등록성공", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         }
         else

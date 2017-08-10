@@ -142,31 +142,34 @@ public class DBHelper extends SQLiteOpenHelper {
 //        Vector<Vector> primaryKeys = new Vector<>();
 //    }
 //
-//    void updateDataTableItem(String beforeValue){
-//        db = getWritableDatabase();
-//        //변경 데이터를 받아서 변경 후 데이터로 변경
-//        ContentValues values = new ContentValues();
-//        values.put("Data", beforeValue);
-//        db.update(TABLE_NAME, values, "_id=?", new String[]{String.valueOf(position)});//table, values, whereClause, whereArgs
-//
-//    }
-//
+    void updateDataTableItem(String data, int position){
+        db = getWritableDatabase();
+
+        String sql =
+                        " Update "+ TABLE_NAME +
+                        " Set Data = " + " '"+data+"' "+
+                        " Where id = " + position;
+        db.execSQL(sql);
+    }
+
     int selectId(String data) {
         db = getReadableDatabase();
-        int primaryKey = 0;
+
         String replace = data.replace(System.getProperty("line.separator"),"");
 
         String sql = "Select id From " + TABLE_NAME + " Where Data Like '"+ replace +"';";
 
         Cursor cursor = db.rawQuery(sql, null);
-        String id = "";
-        while (cursor.moveToNext()){
-            id = cursor.getString(0);
+        String strId = "";
+        while (cursor.moveToNext()) {
+            strId = cursor.getString(0);
         }
-        System.out.println(id);
+
+        int id = Integer.parseInt(strId);
+//        System.out.println(id);
         db.close();
 
-        return Integer.parseInt(id);
+        return id;
     }
 
     int selectDataTableAllIndex() {

@@ -14,6 +14,8 @@ public class DetailedNotepadActivity extends Activity {
     private final String CLASSNAME = "DetailedNotepadActivity";
     private DBHelper dbHelper;
     private int updatePosition;
+    private String beforeModifyData;
+    private String selectedItemIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,16 +24,28 @@ public class DetailedNotepadActivity extends Activity {
         checkCompletion_Button = (Button)findViewById(R.id.checkCompletion_Button);
         checkCompletion_Button.setOnClickListener(this::checkCompletion_ButtonClick);
         detailed_EditText = (EditText)findViewById(R.id.detailed_EditText);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        getMainActivityData();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getMainActivityData();
+    }
+
+    private void getMainActivityData(){
         Intent intent = getIntent();
         if(intent != null){
             final String DATA_KEY = "DATAKEY";
             final String POSITION_KEY = "POSITIONKEY";
-            String selectedItemIndex = intent.getExtras().getString(DATA_KEY);
+            selectedItemIndex = intent.getExtras().getString(DATA_KEY);
             int position = intent.getExtras().getInt(POSITION_KEY);
 
             updatePosition = position+1;
@@ -41,17 +55,19 @@ public class DetailedNotepadActivity extends Activity {
             detailed_EditText.setText(selectedItemIndex);
         }
     }
-
     private void checkCompletion_ButtonClick(View view) {
-        //item 업데이트 해야함
+
         dbHelper = DBHelper.getInstance(this);
+        //해당 id 찾음
+        int id = dbHelper.selectId(selectedItemIndex);
+        System.out.println(id);
+
         String updateData = detailed_EditText.getText().toString();
-        int id = dbHelper.selectId(updateData);
 
+        dbHelper.updateDataTableItem(updateData, id);
 
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//        startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 

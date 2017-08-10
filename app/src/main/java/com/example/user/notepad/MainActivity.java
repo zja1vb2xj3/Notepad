@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
     private DBHelper dbHelper;
     private final String CLASS_NAME = "MainActivity";
     private Button memoActivityOperate_Button;
-
+    private final int ModifyRequest = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +46,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        setNotifyWhenUseRecyclerView();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
         setNotifyWhenUseRecyclerView();
     }
 
@@ -79,8 +85,13 @@ public class MainActivity extends Activity {
 
         intent.putExtra(DATA_KEY, selectedData);
         intent.putExtra(POSITION_KEY, position);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
+        startActivityForResult(intent, ModifyRequest);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == RESULT_OK || requestCode == ModifyRequest){
+
+        }
+    }
 }
