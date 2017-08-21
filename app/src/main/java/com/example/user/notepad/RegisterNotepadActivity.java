@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class RegisterNotepadActivity extends Activity {
     private Button noteRegister_Button;
-    private EditText note_EditText;
+    private EditText note_EditText = null;
     private DBHelper dbHelper;
     private final String CLASS_NAME = "NotepadActivity";
     @Override
