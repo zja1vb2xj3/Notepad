@@ -12,9 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-
+/**
+ * MainActivity
+ */
 public class MainActivity extends Activity {
-
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private DBHelper dbHelper;
@@ -35,7 +36,8 @@ public class MainActivity extends Activity {
         dbHelper = DBHelper.getInstance(this);
 
         dbHelper.createTable();
-        dbHelper.selectDataTableAllIndex();
+
+        dbHelper.selectDataTable();
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 

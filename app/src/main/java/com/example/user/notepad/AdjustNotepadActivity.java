@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+* 메모수정 Activity
+*/
 public class AdjustNotepadActivity extends Activity {
     private Button checkCompletion_Button;
     private EditText detailed_EditText;
