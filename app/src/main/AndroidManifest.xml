@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterNotepadActivity" />
-        <activity android:name=".DetailedNotepadActivity"></activity>
+        <activity android:name=".AdjustNotepadActivity"></activity>
 
     </application>
     <uses-permission android:name ="android.permission.WRITE_EXTERNAL_STORAGE"/>

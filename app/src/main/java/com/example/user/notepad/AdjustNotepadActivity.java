@@ -9,10 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class DetailedNotepadActivity extends Activity {
+public class AdjustNotepadActivity extends Activity {
     private Button checkCompletion_Button;
     private EditText detailed_EditText;
-    private final String CLASSNAME = "DetailedNotepadActivity";
+    private final String CLASSNAME = "AdjustNotepadActivity";
     private DBHelper dbHelper;
 
     private String beforeModifyData;

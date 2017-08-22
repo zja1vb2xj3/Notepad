@@ -121,7 +121,7 @@ public class MainActivity extends Activity {
     }
 
     private void showDetailedNotepad(String selectedData){
-        Intent intent = new Intent(this, DetailedNotepadActivity.class);
+        Intent intent = new Intent(this, AdjustNotepadActivity.class);
         final String DATA_KEY = "DATA_KEY";
         intent.putExtra(DATA_KEY, selectedData);
         startActivityForResult(intent, ModifyRequest);
