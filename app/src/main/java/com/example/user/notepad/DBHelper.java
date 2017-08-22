@@ -109,15 +109,21 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    void deleteDataTableIndex(String data) {
-        System.out.println(data);
-        db = getWritableDatabase();
-        String sql = "DELETE FROM " + TABLE_NAME +
-                " WHERE Data = '" + data + "'; ";
-        db.execSQL(sql);
-        db.close();
+    boolean deleteDataTableIndex(String data) {
+        if(!data.equals("")) {
+            System.out.println(data);
+            db = getWritableDatabase();
+            String sql = "DELETE FROM " + TABLE_NAME +
+                    " WHERE Data = '" + data + "'; ";
+            db.execSQL(sql);
+            db.close();
 
-        Log.i(CLASS_NAME, "delete Sucess");
+            Log.i(CLASS_NAME, "delete Sucess");
+
+            return true;
+        }
+        else
+            return false;
     }
 
     void selectDataTableIndex() {

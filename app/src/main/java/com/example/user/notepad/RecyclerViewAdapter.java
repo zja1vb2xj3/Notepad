@@ -2,6 +2,7 @@ package com.example.user.notepad;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,8 +67,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public boolean onLongClick(View view) {
             String data_TextViewStr = data_TextView.getText().toString();
-            onItemLongClickListener.itemLongClick(data_TextViewStr);
+           boolean dialogButtonSign = onItemLongClickListener.itemLongClick(data_TextViewStr);
+
+            if(dialogButtonSign != false)
             removeViewItem(getAdapterPosition());
+
             System.out.println("getAdapterPosition : " + getAdapterPosition());
 
             return true;
@@ -97,7 +101,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     interface OnItemLongClickListener {
-        void itemLongClick(String textViewStr);
+        boolean itemLongClick(String textViewStr);
     }
 
 }

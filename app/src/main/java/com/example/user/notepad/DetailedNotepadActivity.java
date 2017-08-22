@@ -53,13 +53,14 @@ public class DetailedNotepadActivity extends Activity {
         else
             Toast.makeText(getApplicationContext(),"Intent 가 null 입니다.",Toast.LENGTH_LONG).show();
     }
+
     private void checkCompletion_ButtonClick(View view) {
         dbHelper = DBHelper.getInstance(this);
         //해당 id 찾음
 
         int findId = selectItemFindId(selectedItemIndex);
         if(findId == -1){
-            Toast.makeText(getApplicationContext(),"찾은 id 오류", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"수정 오류", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
@@ -68,7 +69,7 @@ public class DetailedNotepadActivity extends Activity {
             dbHelper.updateDataTableItem(upDateTextStr, findId);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            Toast.makeText(getApplicationContext(),"upDate 성공", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"수정 성공", Toast.LENGTH_LONG).show();
         }
 
     }
