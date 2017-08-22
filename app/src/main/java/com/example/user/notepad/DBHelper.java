@@ -46,7 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //삽입된 데이터 반환
-    ArrayList<String> getDataTableIndex() {
+    public ArrayList<String> getDataTableIndex() {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
@@ -60,7 +60,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return datas;
     }
     //데이터 삽입
-    boolean insertDataTableIndex(String data) {
+    public boolean insertDataTableIndex(String data) {
         try {
             db = getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -74,26 +74,27 @@ public class DBHelper extends SQLiteOpenHelper {
         return false;
     }
 
-
-    void inquiryTable() {
+    //테이블
+    public void PrintAllTable() {
         db = getWritableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT name " +
+                        "SELECT name " +
                         "FROM sqlite_master " +
                         "WHERE type = 'table'", null);
         String result = "";
         while (cursor.moveToNext()) {
             result += cursor.getString(0) + "\n";
         }
+        System.out.println(result);
     }
 
 
-    void dropTable() {
+    public void dropTable() {
         db = getWritableDatabase();
         db.rawQuery("DROP TABLE " + TABLE_NAME, new String[]{});
     }
 
-    void createTable() {
+    public void createTable() {
         db = getWritableDatabase();
         String query =
                 "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
@@ -102,7 +103,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    int getTableIdCount() {
+    public int getTableIdCount() {
         int tableSize = selectDataTableAllIndex();
 
         return tableSize;

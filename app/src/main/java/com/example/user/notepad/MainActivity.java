@@ -30,9 +30,10 @@ public class MainActivity extends Activity {
         Log.i(CLASS_NAME, "onCreate");
 
         newNoteCreateButton = (Button) findViewById(R.id.newNoteCreateButton);
-        newNoteCreateButton.setOnClickListener(this::memoActivityOperate_ButtonClick);
+        newNoteCreateButton.setOnClickListener(this::newNoteCreateButtonClick);
 
         dbHelper = DBHelper.getInstance(this);
+
         dbHelper.createTable();
         dbHelper.selectDataTableAllIndex();
 
@@ -41,7 +42,7 @@ public class MainActivity extends Activity {
         setNotifyWhenUseRecyclerView();
     }
 
-    private void memoActivityOperate_ButtonClick(View view) {
+    private void newNoteCreateButtonClick(View view) {
         Intent intent = new Intent(this, RegisterNotepadActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
