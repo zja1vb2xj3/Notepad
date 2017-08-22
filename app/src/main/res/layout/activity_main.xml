@@ -9,7 +9,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/memoActivityOperate_Button"
+        android:id="@+id/newNoteCreateButton"
         android:text="메모 생성하기"
         android:textSize="30dp"/>
 

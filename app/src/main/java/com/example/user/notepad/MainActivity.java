@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
     private RecyclerViewAdapter adapter;
     private DBHelper dbHelper;
     private final String CLASS_NAME = "MainActivity";
-    private Button memoActivityOperate_Button;
+    private Button newNoteCreateButton;
     private final int ModifyRequest = 1;
     private boolean dialogButtonSign;
 
@@ -29,8 +29,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Log.i(CLASS_NAME, "onCreate");
 
-        memoActivityOperate_Button = (Button) findViewById(R.id.memoActivityOperate_Button);
-        memoActivityOperate_Button.setOnClickListener(this::memoActivityOperate_ButtonClick);
+        newNoteCreateButton = (Button) findViewById(R.id.newNoteCreateButton);
+        newNoteCreateButton.setOnClickListener(this::memoActivityOperate_ButtonClick);
 
         dbHelper = DBHelper.getInstance(this);
         dbHelper.createTable();
