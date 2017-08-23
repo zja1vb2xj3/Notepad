@@ -39,6 +39,7 @@ public class RegisterNotepadActivity extends Activity {
             boolean insertSign = dbHelper.insertDataTableIndex(memoData);
             if (insertSign == true) {
                 Toast.makeText(getApplicationContext(), "메모등록성공", Toast.LENGTH_LONG).show();
+                dbHelper.selectDataTable();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else

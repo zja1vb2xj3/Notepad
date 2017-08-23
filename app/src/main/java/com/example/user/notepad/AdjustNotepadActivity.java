@@ -79,8 +79,9 @@ public class AdjustNotepadActivity extends Activity {
 
     private int selectItemFindId(String selectedItemIndex){
         int id = 0;
+        Log.i("selectedItemIndex", "/"+selectedItemIndex+"/");
         id = dbHelper.selectId(selectedItemIndex);
-        //id가 0이라면 잘못 찾은거
+        //id가 0이라면 데이터가 없음
         if(id == 0)
         return -1;
 

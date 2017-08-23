@@ -36,7 +36,6 @@ public class MainActivity extends Activity {
         dbHelper = DBHelper.getInstance(this);
 
         dbHelper.createTable();
-
         dbHelper.selectDataTable();
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);

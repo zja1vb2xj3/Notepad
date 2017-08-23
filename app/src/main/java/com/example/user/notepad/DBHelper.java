@@ -94,25 +94,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    //테이블
-    public void PrintAllTable() {
-        db = getWritableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT name " +
-                        "FROM sqlite_master " +
-                        "WHERE type = 'table'", null);
-
-        String result = "";
-        result = returnQueryStr(cursor, 0);
-
-        db.close();
-        System.out.println(result);
-    }
-
 
     public void dropTable() {
         db = getWritableDatabase();
-        db.rawQuery("DROP TABLE " + TABLE_NAME, new String[]{});
+        db.execSQL("Drop Table If Exists "+ TABLE_NAME);
         db.close();
     }
 
@@ -164,14 +149,14 @@ public class DBHelper extends SQLiteOpenHelper {
                         + TABLE_NAME +
                         " Where Data Like '" +
                         replaceStr + "';";
-
+        System.out.println("replaceStr"+replaceStr);
         Cursor cursor = db.rawQuery(sql, null);
-        db.close();
 
         String idStr = "";
         idStr = returnQueryStr(cursor, 0);
         int id = Integer.parseInt(idStr);
 
+        db.close();
         return id;
     }
 
@@ -179,9 +164,24 @@ public class DBHelper extends SQLiteOpenHelper {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
-        String result = returnQueryStr(cursor, 0);
+        String result = returnQueryStr(cursor, 1);
         Log.i("selectDataTable", result);
         db.close();
+    }
+
+    //테이블 출력
+    public void printAllTable() {
+        db = getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT name " +
+                        "FROM sqlite_master " +
+                        "WHERE type = 'table'", null);
+
+        String result = "";
+        result = returnQueryStr(cursor, 0);
+
+        db.close();
+        System.out.println(result);
     }
 
     public int getQueryCount(Cursor cursor){
