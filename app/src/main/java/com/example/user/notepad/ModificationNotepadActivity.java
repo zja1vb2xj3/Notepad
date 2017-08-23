@@ -59,7 +59,7 @@ public class ModificationNotepadActivity extends Activity {
         dbHelper = DBHelper.getInstance(this);
         //해당 id 찾음
 
-        int findId = selectItemFindId(selectedItemIndex);
+        int findId = findIdFromDatabaseTable(selectedItemIndex);
         if(findId == -1){
             Toast.makeText(getApplicationContext(),"수정 오류", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, MainActivity.class);
@@ -75,10 +75,10 @@ public class ModificationNotepadActivity extends Activity {
     }
 
     //
-    private int selectItemFindId(String selectedItemIndex){
+    private int findIdFromDatabaseTable(String selectedItemIndex){
         int id = 0;
         Log.i("selectedItemIndex", "/"+selectedItemIndex+"/");
-        id = dbHelper.selectId(selectedItemIndex);
+        id = dbHelper.getDatabaseRowId(selectedItemIndex);
         //id가 0이라면 데이터가 없음
         if(id == 0)
         return -1;

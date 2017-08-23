@@ -33,10 +33,15 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * SQLite 데이터베이스를 관리 및 수행 하는 객체
      */
-    private SQLiteDatabase db;
+
+    private SQLiteDatabase readableDatabase;
+    private SQLiteDatabase writableDatabase;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+
+        readableDatabase = getReadableDatabase();
+        writableDatabase = getWritableDatabase();
     }
 
     private static DBHelper dbHelper;
@@ -61,8 +66,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //삽입된 데이터 반환
     public ArrayList<String> getDataTableIndex() {
-        db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+
+        Cursor cursor = readableDatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
         String result = "";
         ArrayList<String> datas = new ArrayList<>();
@@ -72,19 +77,35 @@ public class DBHelper extends SQLiteOpenHelper {
 
             datas.add(result);
         }
-        db.close();
 
         return datas;
+    }
+
+    int getDatabaseRowId(String data) {
+
+        String replaceStr = data.replace(System.getProperty("line.separator"), "");
+
+        String sql =
+                " Select id From "
+                        + TABLE_NAME +
+                        " Where Data Like '" +
+                        replaceStr + "';";
+        System.out.println("replaceStr"+replaceStr);
+        Cursor cursor = readableDatabase.rawQuery(sql, null);
+
+        String idStr = "";
+        idStr = returnQueryStr(cursor, 0);
+        int id = Integer.parseInt(idStr);
+
+        return id;
     }
 
     //데이터 삽입
     public boolean insertDataTableIndex(String data) {
         try {
-            db = getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put("data", data);
-            db.insert(TABLE_NAME, null, values);
-            db.close();
+            writableDatabase.insert(TABLE_NAME, null, values);
             return true;
 
         } catch (SQLiteException e) {
@@ -96,83 +117,53 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public void dropTable() {
-        db = getWritableDatabase();
-        db.execSQL("Drop Table If Exists "+ TABLE_NAME);
-        db.close();
+        writableDatabase.execSQL("Drop Table If Exists "+ TABLE_NAME);
     }
 
     public void createTable() {
-        db = getWritableDatabase();
         String query =
                 "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
                         " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         " Data TEXT);";
-        db.execSQL(query);
-        db.close();
+        writableDatabase.execSQL(query);
     }
 
 
     boolean deleteDataTableIndex(String data) {
         if (!data.equals("")) {
             System.out.println(data);
-            db = getWritableDatabase();
+
             String sql = "DELETE FROM " + TABLE_NAME +
                     " WHERE Data = '" + data + "'; ";
-            db.execSQL(sql);
-            db.close();
+            writableDatabase.execSQL(sql);
 
             Log.i(CLASS_NAME, "delete Sucess");
 
             return true;
-        } else
+        }
+        else
             return false;
     }
 
     void updateDataTableItem(String data, int position) {
-        db = getWritableDatabase();
-
         String sql =
                 " Update " + TABLE_NAME +
                         " Set Data = " + " '" + data + "' " +
                         " Where id = " + position;
-        db.execSQL(sql);
-        db.close();
+        writableDatabase.execSQL(sql);
     }
 
-    int selectId(String data) {
-        db = getReadableDatabase();
-
-        String replaceStr = data.replace(System.getProperty("line.separator"), "");
-
-        String sql =
-                        " Select id From "
-                        + TABLE_NAME +
-                        " Where Data Like '" +
-                        replaceStr + "';";
-        System.out.println("replaceStr"+replaceStr);
-        Cursor cursor = db.rawQuery(sql, null);
-
-        String idStr = "";
-        idStr = returnQueryStr(cursor, 0);
-        int id = Integer.parseInt(idStr);
-
-        db.close();
-        return id;
-    }
 
     public void selectDataTable() {
-        db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        Cursor cursor = readableDatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
         String result = returnQueryStr(cursor, 1);
         Log.i("selectDataTable", result);
-        db.close();
     }
 
     //테이블 출력
     public void printAllTable() {
-        db = getWritableDatabase();
-        Cursor cursor = db.rawQuery(
+        Cursor cursor = writableDatabase.rawQuery(
                 "SELECT name " +
                         "FROM sqlite_master " +
                         "WHERE type = 'table'", null);
@@ -180,7 +171,6 @@ public class DBHelper extends SQLiteOpenHelper {
         String result = "";
         result = returnQueryStr(cursor, 0);
 
-        db.close();
         System.out.println(result);
     }
 
