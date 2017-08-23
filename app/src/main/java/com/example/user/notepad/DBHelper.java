@@ -66,10 +66,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String result = "";
         ArrayList<String> datas = new ArrayList<>();
+
         while (cursor.moveToNext()) {
             result = cursor.getString(1) + "\n";
+
             datas.add(result);
         }
+        db.close();
 
         return datas;
     }
@@ -81,13 +84,14 @@ public class DBHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("data", data);
             db.insert(TABLE_NAME, null, values);
-
+            db.close();
             return true;
 
         } catch (SQLiteException e) {
             e.printStackTrace();
         }
         return false;
+
     }
 
     //테이블
@@ -97,10 +101,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 "SELECT name " +
                         "FROM sqlite_master " +
                         "WHERE type = 'table'", null);
+
         String result = "";
-        while (cursor.moveToNext()) {
-            result += cursor.getString(0) + "\n";
-        }
+        result = returnQueryStr(cursor, 0);
+
+        db.close();
         System.out.println(result);
     }
 
@@ -108,6 +113,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void dropTable() {
         db = getWritableDatabase();
         db.rawQuery("DROP TABLE " + TABLE_NAME, new String[]{});
+        db.close();
     }
 
     public void createTable() {
@@ -117,6 +123,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         " Data TEXT);";
         db.execSQL(query);
+        db.close();
     }
 
 
@@ -153,20 +160,17 @@ public class DBHelper extends SQLiteOpenHelper {
         String replaceStr = data.replace(System.getProperty("line.separator"), "");
 
         String sql =
-                " Select id From "
+                        " Select id From "
                         + TABLE_NAME +
                         " Where Data Like '" +
                         replaceStr + "';";
 
         Cursor cursor = db.rawQuery(sql, null);
-        String strId = "";
-        while (cursor.moveToNext()) {
-            strId = cursor.getString(0);
-        }
-
-        int id = Integer.parseInt(strId);
-//        System.out.println(id);
         db.close();
+
+        String idStr = "";
+        idStr = returnQueryStr(cursor, 0);
+        int id = Integer.parseInt(idStr);
 
         return id;
     }
@@ -175,19 +179,27 @@ public class DBHelper extends SQLiteOpenHelper {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
-        String result = returnQueryStr(cursor, 0, true);
+        String result = returnQueryStr(cursor, 0);
         Log.i("selectDataTable", result);
-
+        db.close();
     }
 
-    public String returnQueryStr(Cursor cursor, int getStrLength, boolean useStrSign) {
-        String result = "";
+    public int getQueryCount(Cursor cursor){
         int count = 0;
+        while (cursor.moveToNext()){
+            cursor.getString(0);
+            count++;
+        }
+        return count;
+    }
+
+    public String returnQueryStr(Cursor cursor, int getStrLength) {
+        String result = "";
 
         while (cursor.moveToNext()) {
             switch (getStrLength) {
                 case 0:
-                    result += cursor.getString(1);
+                    result += cursor.getString(0);
                     break;
                 case 1:
                     result += cursor.getString(0) + cursor.getString(1) + "\n";
@@ -196,18 +208,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 default:
                     result = null;
                     break;
-
             }
-            count++;
         }
-
-        if (useStrSign == true)
-            return result;
-        else
-            return String.valueOf(count);
+        return result;
     }
 
-}
+}//end DBHelper.class
 
 //    public int getTableIdCount() {
 //        int tableSize = selectDataTableAllIndex();
@@ -215,13 +221,4 @@ public class DBHelper extends SQLiteOpenHelper {
 //        return tableSize;
 //    }
 
-
-//    void selectDataTableIndex() {
-//        db = getReadableDatabase();
-//        String sql = "Select * from " + TABLE_NAME + " Where Data";
-//        Cursor cursor = db.query(TABLE_NAME, null, null, new String[]{"Data"}, null, null, null, null);
-//
-//        String result = returnQueryStr(cursor, 0, true);
-//        System.out.println(result);
-//    }
 
