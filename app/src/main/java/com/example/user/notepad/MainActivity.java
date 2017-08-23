@@ -123,7 +123,7 @@ public class MainActivity extends Activity {
     }
 
     private void showDetailedNotepad(String selectedData){
-        Intent intent = new Intent(this, AdjustNotepadActivity.class);
+        Intent intent = new Intent(this, ModificationNotepadActivity.class);
         final String DATA_KEY = "DATA_KEY";
         intent.putExtra(DATA_KEY, selectedData);
         startActivityForResult(intent, ModifyRequest);

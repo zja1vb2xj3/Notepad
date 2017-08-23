@@ -12,9 +12,9 @@ import android.widget.Toast;
 /**
 * 메모수정 Activity
 */
-public class AdjustNotepadActivity extends Activity {
-    private Button checkCompletion_Button;
-    private EditText detailed_EditText;
+public class ModificationNotepadActivity extends Activity {
+    private Button modificationButton;
+    private EditText detailedNote_EditText;
     private final String CLASSNAME = "AdjustNotepadActivity";
     private DBHelper dbHelper;
 
@@ -25,17 +25,15 @@ public class AdjustNotepadActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_notepad);
-        checkCompletion_Button = (Button)findViewById(R.id.checkCompletion_Button);
-        checkCompletion_Button.setOnClickListener(this::checkCompletion_ButtonClick);
-        detailed_EditText = (EditText)findViewById(R.id.detailed_EditText);
-
+        modificationButton = (Button)findViewById(R.id.modificationButton);
+        modificationButton.setOnClickListener(this::modificationButtonClick);
+        detailedNote_EditText = (EditText)findViewById(R.id.detailedNote_EditText);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         getMainActivityData();
-
     }
 
     @Override
@@ -51,13 +49,13 @@ public class AdjustNotepadActivity extends Activity {
             selectedItemIndex = intent.getExtras().getString(DATA_KEY);
 
             Log.i("String", selectedItemIndex);
-            detailed_EditText.setText(selectedItemIndex);
+            detailedNote_EditText.setText(selectedItemIndex);
         }
         else
             Toast.makeText(getApplicationContext(),"Intent 가 null 입니다.",Toast.LENGTH_LONG).show();
     }
 
-    private void checkCompletion_ButtonClick(View view) {
+    private void modificationButtonClick(View view) {
         dbHelper = DBHelper.getInstance(this);
         //해당 id 찾음
 
@@ -68,15 +66,15 @@ public class AdjustNotepadActivity extends Activity {
             startActivity(intent);
         }
         else{
-            String upDateTextStr= detailed_EditText.getText().toString();
+            String upDateTextStr= detailedNote_EditText.getText().toString();
             dbHelper.updateDataTableItem(upDateTextStr, findId);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             Toast.makeText(getApplicationContext(),"수정 성공", Toast.LENGTH_LONG).show();
         }
-
     }
 
+    //
     private int selectItemFindId(String selectedItemIndex){
         int id = 0;
         Log.i("selectedItemIndex", "/"+selectedItemIndex+"/");
