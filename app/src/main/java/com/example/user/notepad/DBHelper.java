@@ -44,15 +44,6 @@ public class DBHelper extends SQLiteOpenHelper {
         writableDatabase = getWritableDatabase();
     }
 
-//    private static DBHelper dbHelper;
-//
-//    static DBHelper getInstance(Context context) {
-//        if (dbHelper == null) {
-//            dbHelper = new DBHelper(context);
-//        }
-//        return dbHelper;
-//    }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
 
