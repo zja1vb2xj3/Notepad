@@ -27,7 +27,13 @@ public class RegisterNotepadActivity extends Activity {
         noteRegister_Button = (Button) findViewById(R.id.noteRegister_Button);
         noteRegister_Button.setOnClickListener(this::noteRegister_ButtonClick);
 
-        dbHelper = DBHelper.getInstance(this);
+        dbHelper = new DBHelper(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        note_EditText.setText("");
     }
 
     private void noteRegister_ButtonClick(View view) {

@@ -36,14 +36,12 @@ public class MainActivity extends Activity {
         newNoteCreateButton = (Button) findViewById(R.id.newNoteCreateButton);
         newNoteCreateButton.setOnClickListener(this::newNoteCreateButtonClick);
 
-        dbHelper = DBHelper.getInstance(this);
+        dbHelper = new DBHelper(this);
 
         dbHelper.createTable();
         dbHelper.selectDataTable();
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-
-        isNotifyWhenUseRecyclerView();
 
     }
 
@@ -67,7 +65,7 @@ public class MainActivity extends Activity {
     }
 
     private void isNotifyWhenUseRecyclerView() {
-        adapter = new RecyclerViewAdapter(this, dbHelper.getDataTableIndex());//dbHelper.getDataTableIndex 테이블 메모 데이터들
+        adapter = new RecyclerViewAdapter(this, dbHelper.getDatabasRowDatas());//dbHelper.getDataTableIndex 테이블 메모 데이터들
 
         adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
             @Override

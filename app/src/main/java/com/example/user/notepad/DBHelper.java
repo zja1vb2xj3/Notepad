@@ -44,14 +44,14 @@ public class DBHelper extends SQLiteOpenHelper {
         writableDatabase = getWritableDatabase();
     }
 
-    private static DBHelper dbHelper;
-
-    static DBHelper getInstance(Context context) {
-        if (dbHelper == null) {
-            dbHelper = new DBHelper(context);
-        }
-        return dbHelper;
-    }
+//    private static DBHelper dbHelper;
+//
+//    static DBHelper getInstance(Context context) {
+//        if (dbHelper == null) {
+//            dbHelper = new DBHelper(context);
+//        }
+//        return dbHelper;
+//    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -64,8 +64,8 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //삽입된 데이터 반환
-    public ArrayList<String> getDataTableIndex() {
+    /**삽입된 데이터 반환 */
+    public ArrayList<String> getDatabasRowDatas() {
 
         Cursor cursor = readableDatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 

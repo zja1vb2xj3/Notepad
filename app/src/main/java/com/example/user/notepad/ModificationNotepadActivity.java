@@ -56,7 +56,7 @@ public class ModificationNotepadActivity extends Activity {
     }
 
     private void modificationButtonClick(View view) {
-        dbHelper = DBHelper.getInstance(this);
+        dbHelper = new DBHelper(this);
         //해당 id 찾음
 
         int findId = findIdFromDatabaseTable(selectedItemIndex);
@@ -86,6 +86,5 @@ public class ModificationNotepadActivity extends Activity {
             return id;
 
     }
-
 
 }
