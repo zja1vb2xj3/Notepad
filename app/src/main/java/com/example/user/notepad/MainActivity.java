@@ -13,15 +13,18 @@ import android.widget.Button;
 import android.widget.Toast;
 
 /**
- * MainActivity
+ * MainActivity.class
  */
 public class MainActivity extends Activity {
+
+    private final String CLASS_NAME = "MainActivity";
+    private final int ModifyRequest = 1;
+
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private DBHelper dbHelper;
-    private final String CLASS_NAME = "MainActivity";
     private Button newNoteCreateButton;
-    private final int ModifyRequest = 1;
+
     private boolean dialogButtonSign;
 
     @Override
@@ -86,8 +89,7 @@ public class MainActivity extends Activity {
     }//end setNotifyWhenUseRecyclerView
 
 
-
-    private void createAskedToRemoveDialog(String deleteData){
+    private void createAskedToRemoveDialog(String deleteData) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("선택한 메모를 삭제 하시겠습니까?")
@@ -101,10 +103,9 @@ public class MainActivity extends Activity {
 
                         isNotifyWhenUseRecyclerView();
 
-                        if(deleteSign != false) {
+                        if (deleteSign != false) {
                             Toast.makeText(getApplicationContext(), "정상적으로 삭제 되엇습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                        else
+                        } else
                             Toast.makeText(getApplicationContext(), "오류로 인하여 삭제가 실패하였습니다.", Toast.LENGTH_SHORT).show();
 
                     }
@@ -119,17 +120,16 @@ public class MainActivity extends Activity {
                     }
                 });
 
-            AlertDialog dialog = builder.create();
-            dialog.show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
-    private void showDetailedNotepad(String selectedData){
+    private void showDetailedNotepad(String selectedData) {
         Intent intent = new Intent(this, ModificationNotepadActivity.class);
         final String DATA_KEY = "DATA_KEY";
         intent.putExtra(DATA_KEY, selectedData);
         startActivityForResult(intent, ModifyRequest);
     }//end showDetailedNotepad
-
 
 
 }

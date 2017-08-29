@@ -164,9 +164,10 @@ public class DBHelper extends SQLiteOpenHelper {
     //테이블 출력
     public void printAllTable() {
         Cursor cursor = writableDatabase.rawQuery(
-                "SELECT name " +
+                        "SELECT name " +
                         "FROM sqlite_master " +
-                        "WHERE type = 'table'", null);
+                        "WHERE type = 'table'", null
+        );
 
         String result = "";
         result = returnQueryStr(cursor, 0);
@@ -187,6 +188,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String result = "";
 
         while (cursor.moveToNext()) {
+
             switch (getStrLength) {
                 case 0:
                     result += cursor.getString(0);
@@ -198,17 +200,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 default:
                     result = null;
                     break;
-            }
-        }
+            }//end switch
+
+        }//end while
+
         return result;
     }
 
 }//end DBHelper.class
 
-//    public int getTableIdCount() {
-//        int tableSize = selectDataTableAllIndex();
-//
-//        return tableSize;
-//    }
 
 
