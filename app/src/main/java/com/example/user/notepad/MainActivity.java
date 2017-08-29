@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
     }
 
     private void isNotifyWhenUseRecyclerView() {
-        adapter = new RecyclerViewAdapter(this, dbHelper.getDatabasRowDatas());//dbHelper.getDataTableIndex 테이블 메모 데이터들
+        adapter = new RecyclerViewAdapter(this, dbHelper.getDataTableRowDatas());//dbHelper.getDataTableIndex 테이블 메모 데이터들
 
         adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
             @Override
@@ -98,7 +98,7 @@ public class MainActivity extends Activity {
                 .setPositiveButton("삭제", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        boolean deleteSign = dbHelper.deleteDataTableIndex(deleteData);
+                        boolean deleteSign = dbHelper.deleteDataTableRow(deleteData);
                         dialogButtonSign = true;
 
                         isNotifyWhenUseRecyclerView();

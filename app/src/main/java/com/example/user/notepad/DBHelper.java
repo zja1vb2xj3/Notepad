@@ -56,7 +56,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**삽입된 데이터 반환 */
-    public ArrayList<String> getDatabasRowDatas() {
+    public ArrayList<String> getDataTableRowDatas() {
 
         Cursor cursor = readableDatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
@@ -72,7 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return datas;
     }
 
-    int getDatabaseRowId(String data) {
+    int getDataTableRowId(String data) {
 
         String replaceStr = data.replace(System.getProperty("line.separator"), "");
 
@@ -92,7 +92,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //데이터 삽입
-    public boolean insertDataTableIndex(String data) {
+    public boolean insertDataTableRow(String data) {
         try {
             ContentValues values = new ContentValues();
             values.put("data", data);
@@ -120,7 +120,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    boolean deleteDataTableIndex(String data) {
+    boolean deleteDataTableRow(String data) {
         if (!data.equals("")) {
             System.out.println(data);
 
@@ -136,7 +136,7 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
     }
 
-    void updateDataTableItem(String data, int position) {
+    void updateDataTableRow(String data, int position) {
         String sql =
                 " Update " + TABLE_NAME +
                         " Set Data = " + " '" + data + "' " +

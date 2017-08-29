@@ -66,7 +66,7 @@ public class ModificationNotepadActivity extends Activity {
             startActivity(intent);
         } else {
             String upDateTextStr = detailedNote_EditText.getText().toString();
-            dbHelper.updateDataTableItem(upDateTextStr, findId);
+            dbHelper.updateDataTableRow(upDateTextStr, findId);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             Toast.makeText(getApplicationContext(), "수정 성공", Toast.LENGTH_LONG).show();
@@ -77,7 +77,7 @@ public class ModificationNotepadActivity extends Activity {
     private int findIdFromDatabaseTable(String selectedItemIndex) {
         int id = 0;
         Log.i("selectedItemIndex", "/" + selectedItemIndex + "/");
-        id = dbHelper.getDatabaseRowId(selectedItemIndex);
+        id = dbHelper.getDataTableRowId(selectedItemIndex);
         //id가 0이라면 데이터가 없음
         if (id == 0)
             return -1;
