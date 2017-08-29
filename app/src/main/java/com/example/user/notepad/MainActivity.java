@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
     private DBHelper dbHelper;
     private Button newNoteCreateButton;
 
-    private boolean dialogButtonSign;
+    private boolean dialogButtonSign = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +89,8 @@ public class MainActivity extends Activity {
 
     private void createAskedToRemoveDialog(String deleteData) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        dialogButtonSign = false;
 
         builder.setTitle("선택한 메모를 삭제 하시겠습니까?")
                 .setCancelable(false)
