@@ -40,7 +40,8 @@ public class MainActivity extends Activity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        setNotifyWhenUseRecyclerView();
+        isNotifyWhenUseRecyclerView();
+
     }
 
     private void newNoteCreateButtonClick(View view) {
@@ -52,17 +53,17 @@ public class MainActivity extends Activity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        setNotifyWhenUseRecyclerView();
+        isNotifyWhenUseRecyclerView();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.i(CLASS_NAME, "onResume");
-        setNotifyWhenUseRecyclerView();
+        isNotifyWhenUseRecyclerView();
     }
 
-    private void setNotifyWhenUseRecyclerView() {
+    private void isNotifyWhenUseRecyclerView() {
         adapter = new RecyclerViewAdapter(this, dbHelper.getDataTableIndex());//dbHelper.getDataTableIndex 테이블 메모 데이터들
 
         adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
@@ -98,7 +99,7 @@ public class MainActivity extends Activity {
                         boolean deleteSign = dbHelper.deleteDataTableIndex(deleteData);
                         dialogButtonSign = true;
 
-                        setNotifyWhenUseRecyclerView();
+                        isNotifyWhenUseRecyclerView();
 
                         if(deleteSign != false) {
                             Toast.makeText(getApplicationContext(), "정상적으로 삭제 되엇습니다.", Toast.LENGTH_SHORT).show();
