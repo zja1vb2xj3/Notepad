@@ -1,6 +1,7 @@
 package com.example.user.notepad;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 /**
@@ -31,6 +33,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      */
     private ViewHolder viewHolder;
 
+
+    /**
+     * ArrayList를 받는 생성자
+     * @param context
+     * @param datas
+     */
     RecyclerViewAdapter(Context context, ArrayList<String> datas) {
         this.layoutInflater = LayoutInflater.from(context);
         this.datas = datas;
@@ -103,7 +111,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public void onClick(View view) {
             //클릭 시 data_TextView의 텍스트를 받아와 할당
             String data_TextViewStr = data_TextView.getText().toString();
-            onItemClickListener.itemOnClick(data_TextViewStr);
+            onItemClickListener.itemOnClick(data_TextViewStr, getAdapterPosition());
         }
 
         /**
@@ -149,7 +157,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     interface OnItemClickListener {
-        void itemOnClick(String textViewStr);
+        void itemOnClick(String textViewStr, int position);
     }
 
     interface OnItemLongClickListener {

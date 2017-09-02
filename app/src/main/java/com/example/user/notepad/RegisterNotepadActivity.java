@@ -3,6 +3,7 @@ package com.example.user.notepad;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +14,7 @@ import android.widget.Toast;
  * RegisterNotepadActivity.class
  * 메모등록 Activity
  */
-public class RegisterNotepadActivity extends Activity {
+public class RegisterNotepadActivity extends AppCompatActivity {
     private Button noteRegister_Button;
     private EditText note_EditText = null;
     private DBHelper dbHelper;

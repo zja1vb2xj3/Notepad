@@ -1,10 +1,10 @@
 package com.example.user.notepad;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,10 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /**
  * MainActivity.class
  */
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private final String CLASS_NAME = "MainActivity";
     private final int ModifyRequest = 1;
@@ -24,6 +26,7 @@ public class MainActivity extends Activity {
     private RecyclerViewAdapter adapter;
     private DBHelper dbHelper;
     private Button newNoteCreateButton;
+    private NotepadModel notepadModel;
 
     private boolean dialogButtonSign = false;
 
@@ -41,10 +44,14 @@ public class MainActivity extends Activity {
         dbHelper.createTable();
         dbHelper.selectDataTable();
 
+        notepadModel = new NotepadModel();
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
     }
-
+    /**
+     * 새로운 메모 생성하기
+     */
     private void newNoteCreateButtonClick(View view) {
         Intent intent = new Intent(this, RegisterNotepadActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -64,14 +71,20 @@ public class MainActivity extends Activity {
         isNotifyWhenUseRecyclerView();
     }
 
+    /**
+     * RecyclerView의 재사용 알림
+     */
     private void isNotifyWhenUseRecyclerView() {
+
+        updateNotepadModel(dbHelper.getDataTableRowDatas());
+
         adapter = new RecyclerViewAdapter(this, dbHelper.getDataTableRowDatas());//dbHelper.getDataTableIndex 테이블 메모 데이터들
 
         adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void itemOnClick(String textViewStr) {
+            public void itemOnClick(String textViewStr, int position) {
                 Log.i("textviewStr", textViewStr);
-                showDetailedNotepad(textViewStr);
+                showDetailsNotepad(textViewStr, position);
             }
         });
 
@@ -86,6 +99,13 @@ public class MainActivity extends Activity {
         recyclerView.setAdapter(adapter);
     }//end setNotifyWhenUseRecyclerView
 
+    /**
+     * notepadModel 객체의 필드 객체 noteDatas 업데이트
+     * @param datas
+     */
+    private void updateNotepadModel(ArrayList<String> datas){
+        notepadModel.setNoteDatas(datas);
+    }
 
     private void createAskedToRemoveDialog(String deleteData) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -124,11 +144,14 @@ public class MainActivity extends Activity {
         dialog.show();
     }
 
-    private void showDetailedNotepad(String selectedData) {
-        Intent intent = new Intent(this, ModificationNotepadActivity.class);
-        final String DATA_KEY = "DATA_KEY";
-        intent.putExtra(DATA_KEY, selectedData);
-        startActivityForResult(intent, ModifyRequest);
+    private void showDetailsNotepad(String selectedData, int position) {
+        notepadModel.setDataPosition(position);
+        final String MODLE_KEY = "NotepadModel";
+
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra(MODLE_KEY, notepadModel);
+
+        startActivity(intent);
     }//end showDetailedNotepad
 
 
