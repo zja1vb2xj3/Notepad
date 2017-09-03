@@ -56,8 +56,6 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
 
-//                ArrayList<Fragment> newFragments = getFragments(position);
-//                isNotifyWhenUseViewPager(newFragments);
             }
 
             @Override
