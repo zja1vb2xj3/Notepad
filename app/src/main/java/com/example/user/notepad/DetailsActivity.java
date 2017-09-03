@@ -67,6 +67,7 @@ public class DetailsActivity extends AppCompatActivity {
         });
 
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setCurrentItem(notepadModel.getDataPosition());
     }
 
     private void getNotepadModel() {
@@ -132,6 +133,7 @@ public class DetailsActivity extends AppCompatActivity {
             super.onDestroyView();
             Log.i("onDestroyViewSign", "onDestroyView");
         }
+
     }//end ArrayListFragment
 
 }
