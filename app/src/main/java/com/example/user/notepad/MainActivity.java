@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void itemOnClick(String textViewStr, int position) {
+            public void itemOnClick(String textViewStr, int selectedPosition) {
                 Log.i("textviewStr", textViewStr);
-                showDetailsNotepad(textViewStr, position);
+                showDetailsNotepad(selectedPosition);
             }
         });
 
@@ -144,10 +144,9 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void showDetailsNotepad(String selectedData, int position) {
-        notepadModel.setDataPosition(position);
+    private void showDetailsNotepad(int selectedPosition) {
+        notepadModel.setDataPosition(selectedPosition);
         final String MODLE_KEY = "NotepadModel";
-
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra(MODLE_KEY, notepadModel);
 

@@ -19,34 +19,63 @@ public class DetailsActivity extends AppCompatActivity {
     private NotepadModel notepadModel;
     private ViewPager viewPager;
     private PagerAdapter pagerAdapter;
+    private int itemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        ArrayList<Fragment> fragments = getFragments();
+        getNotepadModel();
+        ArrayList<Fragment> fragments = getFragments(notepadModel.getDataPosition());
+        isNotifyWhenUseViewPager(fragments);
+
+    }
+
+    private ArrayList<Fragment> getFragments(int position) {
+        ArrayList<Fragment> fragments = new ArrayList<Fragment>();
+
+        for(int i=0; i<notepadModel.getNoteDatas().size(); i++)
+        fragments.add(PageFragment.newInstance(notepadModel.getNoteDatas().get(i)));
+
+        return fragments;
+    }
+
+    private void isNotifyWhenUseViewPager(ArrayList<Fragment> fragments) {
         pagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            //시작 페이지 0
+            @Override
+            public void onPageSelected(int position) {
+
+//                ArrayList<Fragment> newFragments = getFragments(position);
+//                isNotifyWhenUseViewPager(newFragments);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         viewPager.setAdapter(pagerAdapter);
     }
 
-    private ArrayList<Fragment> getFragments() {
+    private void getNotepadModel() {
         final String MODEL_KEY = "NotepadModel";
-        ArrayList<Fragment> fragments = new ArrayList<Fragment>();
-
-        if(getIntent() != null){
+        if (getIntent() != null) {
             Intent intent = getIntent();
-
             notepadModel = (NotepadModel) intent.getSerializableExtra(MODEL_KEY);
-
-            for(int i=0; i<notepadModel.getNoteDatas().size(); i++){
-                fragments.add(PageFragment.newInstance(notepadModel.getNoteDatas().get(i)));
-            }
+            itemCount = notepadModel.getNoteDatas().size();
         }
-
-        return fragments;
     }
 
     private class PagerAdapter extends FragmentPagerAdapter {
@@ -57,9 +86,10 @@ public class DetailsActivity extends AppCompatActivity {
             this.fragments = fragments;
         }
 
+
         @Override
         public Fragment getItem(int position) {
-            return this.fragments.get(position);
+            return fragments.get(position);
         }
 
         /**
@@ -67,9 +97,9 @@ public class DetailsActivity extends AppCompatActivity {
          */
         @Override
         public int getCount() {
-            return this.fragments.size();
+            Log.i("getCount", String.valueOf(itemCount));
+            return fragments.size();
         }
-
 
     }
 
