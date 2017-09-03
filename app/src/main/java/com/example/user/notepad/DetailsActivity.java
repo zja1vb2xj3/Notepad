@@ -35,8 +35,8 @@ public class DetailsActivity extends AppCompatActivity {
     private ArrayList<Fragment> getFragments(int position) {
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 
-        for(int i=0; i<notepadModel.getNoteDatas().size(); i++)
-        fragments.add(PageFragment.newInstance(notepadModel.getNoteDatas().get(i)));
+        for (int i = 0; i < notepadModel.getNoteDatas().size(); i++)
+            fragments.add(PageFragment.newInstance(notepadModel.getNoteDatas().get(i)));
 
         return fragments;
     }
@@ -46,23 +46,15 @@ public class DetailsActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            //시작 페이지 0
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public void transformPage(View page, float position) {
+                final float normalizedposition = Math.abs(Math.abs(position) - 1);
+                page.setScaleX(normalizedposition / 2 + 0.5f);
+                page.setScaleY(normalizedposition / 2 + 0.5f);
             }
         });
+
 
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(notepadModel.getDataPosition());
@@ -70,6 +62,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void getNotepadModel() {
         final String MODEL_KEY = "NotepadModel";
+
         if (getIntent() != null) {
             Intent intent = getIntent();
             notepadModel = (NotepadModel) intent.getSerializableExtra(MODEL_KEY);
