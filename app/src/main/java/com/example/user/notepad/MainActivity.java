@@ -3,21 +3,25 @@ package com.example.user.notepad;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 
 /**
  * MainActivity.class
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ActionBarActivity {
 
     private final String CLASS_NAME = "MainActivity";
     private final int ModifyRequest = 1;
@@ -25,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private DBHelper dbHelper;
-    private Button newNoteCreateButton;
     private NotepadModel notepadModel;
 
     private boolean dialogButtonSign = false;
@@ -36,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.i(CLASS_NAME, "onCreate");
 
-        newNoteCreateButton = (Button) findViewById(R.id.newNoteCreateButton);
-        newNoteCreateButton.setOnClickListener(this::newNoteCreateButtonClick);
-
         dbHelper = new DBHelper(this);
 
         dbHelper.createTable();
@@ -48,14 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-    }
-    /**
-     * 새로운 메모 생성하기
-     */
-    private void newNoteCreateButtonClick(View view) {
-        Intent intent = new Intent(this, RegisterNotepadActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
     }
 
     @Override
@@ -101,9 +93,10 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * notepadModel 객체의 필드 객체 noteDatas 업데이트
+     *
      * @param datas
      */
-    private void updateNotepadModel(ArrayList<String> datas){
+    private void updateNotepadModel(ArrayList<String> datas) {
         notepadModel.setNoteDatas(datas);
     }
 
@@ -155,6 +148,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * 새로운 메모 생성하기
+     */
+    private void createNewNoteOptionButtonClick() {
+        Intent intent = new Intent(this, RegisterNotepadActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.createNewNoteButton) {
+            createNewNoteOptionButtonClick();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
