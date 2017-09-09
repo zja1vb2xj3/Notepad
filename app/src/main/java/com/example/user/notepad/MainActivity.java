@@ -146,11 +146,6 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }//end showDetailedNotepad
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     /**
      * 새로운 메모 생성하기
@@ -159,6 +154,12 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, RegisterNotepadActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

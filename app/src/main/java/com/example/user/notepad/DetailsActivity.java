@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -69,6 +72,29 @@ public class DetailsActivity extends AppCompatActivity {
             itemCount = notepadModel.getNoteDatas().size();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_details, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.modifyNoteButton) {
+            modifyNoteOptionButtonClick();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void modifyNoteOptionButtonClick() {
+        Toast.makeText(getApplicationContext(), "수정 버튼을 클릭하셨습니다.", Toast.LENGTH_SHORT).show();
+    }
+
 
     private class PagerAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> fragments;

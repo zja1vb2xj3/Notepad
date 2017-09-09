@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.user.notepad.MainActivity">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/newNoteCreateButton"
-        android:text="메모 생성하기"
-        android:textSize="30dp"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
