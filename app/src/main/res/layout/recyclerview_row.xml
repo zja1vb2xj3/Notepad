@@ -11,10 +11,9 @@
         android:background="#000000" />
 
     <TextView
-        android:id="@+id/data_TextView"
+        android:id="@+id/dataTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="25dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"

@@ -1,7 +1,7 @@
 package com.example.user.notepad;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 /**
@@ -33,15 +32,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      */
     private ViewHolder viewHolder;
 
-
+    private Resources resources;
     /**
      * ArrayList를 받는 생성자
      * @param context
      * @param datas
      */
-    RecyclerViewAdapter(Context context, ArrayList<String> datas) {
+    RecyclerViewAdapter(Context context, ArrayList<String> datas, Resources resources) {
         this.layoutInflater = LayoutInflater.from(context);
         this.datas = datas;
+        this.resources = resources;
 
         System.out.println("getDBIndex" + this.datas);
     }
@@ -75,7 +75,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         String data = datas.get(position);//0은 0이 들어가고 1에는 0하고 1이 같이들어감
         String removedStr = removalLinefeedStr(data);
-        holder.data_TextView.setText(removedStr);
+        holder.dataTextView.setText(removedStr);
     }
 
     /**
@@ -94,13 +94,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      * RecyclerView 내의 모든 item view의 데이터를 관리
      */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        private TextView data_TextView;
+        private TextView dataTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            data_TextView = (TextView) itemView.findViewById(R.id.data_TextView);
-            data_TextView.setOnClickListener(this);
-            data_TextView.setOnLongClickListener(this);
+            dataTextView = (TextView) itemView.findViewById(R.id.dataTextView);
+            final int textSize = resources.getInteger(R.integer.noteTextSize);
+            dataTextView.setTextSize(textSize);
+            dataTextView.setOnClickListener(this);
+            dataTextView.setOnLongClickListener(this);
         }
 
         /**
@@ -110,7 +112,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onClick(View view) {
             //클릭 시 data_TextView의 텍스트를 받아와 할당
-            String data_TextViewStr = data_TextView.getText().toString();
+            String data_TextViewStr = dataTextView.getText().toString();
             onItemClickListener.itemOnClick(data_TextViewStr, getAdapterPosition());
         }
 
@@ -121,7 +123,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public boolean onLongClick(View view) {
 
-            String data_TextViewStr = data_TextView.getText().toString();
+            String data_TextViewStr = dataTextView.getText().toString();
             boolean dialogButtonSign = onItemLongClickListener.itemLongClick(data_TextViewStr);
             Log.i("dialogButtonSign", String.valueOf(dialogButtonSign));
             if (dialogButtonSign != false)

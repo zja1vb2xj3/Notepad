@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterNotepadActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".ModifyActivity" />
         <activity android:name=".DetailsActivity"></activity>
     </application>

@@ -29,7 +29,11 @@ public class ModifyActivity extends AppCompatActivity {
 //        modificationButton = (Button) findViewById(R.id.modificationButton);
 //        modificationButton.setOnClickListener(this::modificationButtonClick);
         dbHelper = new DBHelper(getApplicationContext());
+
         modifyEditText = (EditText) findViewById(R.id.modifyEditText);
+        final int textSize = getResources().getInteger(R.integer.noteTextSize);
+        modifyEditText.setTextSize(textSize);
+
     }
 
     @Override

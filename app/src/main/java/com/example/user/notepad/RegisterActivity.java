@@ -13,7 +13,7 @@ import android.widget.Toast;
  * RegisterNotepadActivity.class
  * 메모등록 Activity
  */
-public class RegisterNotepadActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     private Button noteRegister_Button;
     private EditText note_EditText = null;
     private DBHelper dbHelper;
@@ -21,7 +21,7 @@ public class RegisterNotepadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_notepad);
+        setContentView(R.layout.activity_register);
         Log.i(CLASS_NAME, "onCreate");
         note_EditText = (EditText) findViewById(R.id.note_EditText);
         noteRegister_Button = (Button) findViewById(R.id.noteRegister_Button);

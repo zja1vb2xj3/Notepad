@@ -1,6 +1,7 @@
 package com.example.user.notepad;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -164,6 +165,10 @@ public class DetailsActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_page, container, false);
 
             TextView fragmentTextView = (TextView) rootView.findViewById(R.id.fragmentTextView);
+
+            final int textSize = getResources().getInteger(R.integer.noteTextSize);
+            fragmentTextView.setTextSize(textSize);
+
             fragmentTextView.setText(message);
 
             return rootView;
