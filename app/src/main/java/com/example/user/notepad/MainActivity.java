@@ -21,7 +21,7 @@ import java.util.ArrayList;
 /**
  * MainActivity.class
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private final String CLASS_NAME = "MainActivity";
     private final int ModifyRequest = 1;

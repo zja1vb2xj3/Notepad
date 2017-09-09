@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,6 +22,7 @@ public class DetailsActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private PagerAdapter pagerAdapter;
     private int itemCount;
+    private int itemPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +30,12 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
 
         getNotepadModel();
-        ArrayList<Fragment> fragments = getFragments(notepadModel.getDataPosition());
-        isNotifyWhenUseViewPager(fragments);
+        ArrayList<Fragment> fragments = getFragments();
+        setViewPager(fragments);
 
     }
 
-    private ArrayList<Fragment> getFragments(int position) {
+    private ArrayList<Fragment> getFragments() {
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 
         for (int i = 0; i < notepadModel.getNoteDatas().size(); i++)
@@ -44,10 +44,28 @@ public class DetailsActivity extends AppCompatActivity {
         return fragments;
     }
 
-    private void isNotifyWhenUseViewPager(ArrayList<Fragment> fragments) {
+    private void setViewPager(ArrayList<Fragment> fragments) {
         pagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                itemPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
 
         viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
@@ -61,7 +79,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(notepadModel.getDataPosition());
-    }
+    }//end setViewPager
 
     private void getNotepadModel() {
         final String MODEL_KEY = "NotepadModel";
@@ -92,7 +110,13 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void modifyNoteOptionButtonClick() {
-        Toast.makeText(getApplicationContext(), "수정 버튼을 클릭하셨습니다.", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ModifyActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+        notepadModel.setDataPosition(itemPosition);
+        final String MODLE_KEY = "NotepadModel";
+        intent.putExtra(MODLE_KEY, notepadModel);
+        startActivity(intent);
     }
 
 
@@ -119,7 +143,7 @@ public class DetailsActivity extends AppCompatActivity {
             return fragments.size();
         }
 
-    }
+    }//end PagerAdapter.class
 
     public static class PageFragment extends Fragment {
         private static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
@@ -151,6 +175,6 @@ public class DetailsActivity extends AppCompatActivity {
             Log.i("onDestroyViewSign", "onDestroyView");
         }
 
-    }//end ArrayListFragment
+    }//end PageFragment.class
 
 }
