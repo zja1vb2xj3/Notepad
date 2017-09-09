@@ -75,32 +75,32 @@ public class DBHelper extends SQLiteOpenHelper {
         return datas;
     }
 
-    int getDataTableRowId(String data) {
-        try {
-            String afterReplaceStr = getReplaceStr(data);
+    public ArrayList<Integer> getDataTableRowId(String data) {
 
-            Log.i("replaceStr", afterReplaceStr + "/");
+        try {
+            String replaceAfterStr = getReplaceStr(data);
+
+            Log.i("replaceStr", replaceAfterStr + "/");
             String sql =
                             " Select id " +
                             " From " + TABLE_NAME +
                             " Where Data " +
-                            " Like '" + afterReplaceStr + "';";
+                            " Like '" + replaceAfterStr + "';";
 
             Cursor cursor = readableDatabase.rawQuery(sql, null);
 
-            String idStr = returnQueryStr(cursor, 0);
-            int id = Integer.parseInt(idStr);
-            System.out.println("findid" + id);
+            ArrayList<Integer> idList = getIdList(cursor);
 
-            return id;
-        } catch (NumberFormatException e) {
+            return idList;
+        }
+        catch (NumberFormatException e) {
             e.printStackTrace();
         }
 
-        return -1;
+        return null;
     }
 
-    private String getReplaceStr(String beforeReplaceStr){
+    private String getReplaceStr(String beforeReplaceStr) {
         String afterReplaceStr = beforeReplaceStr.replace(System.getProperty("line.separator"), "");
 
         return afterReplaceStr;
@@ -136,12 +136,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    boolean deleteDataTableRow(String data) {
+    private boolean deleteDataTableRow(String data) {
         if (!data.equals("")) {
             System.out.println(data);
 
             String sql = "DELETE FROM " + TABLE_NAME +
-                    " WHERE Data = '" + data + "'; ";
+                         " WHERE Data = '" + data + "'; ";
             writableDatabase.execSQL(sql);
 
             Log.i(CLASS_NAME, "delete Sucess");
@@ -159,6 +159,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " Update " + TABLE_NAME +
                         " Set Data = " + " '" + afterReplaceStr + "' " +
                         " Where id = " + position;
+
         writableDatabase.execSQL(sql);
     }
 
@@ -173,9 +174,9 @@ public class DBHelper extends SQLiteOpenHelper {
     //테이블 출력
     public void printAllTable() {
         Cursor cursor = writableDatabase.rawQuery(
-                "SELECT name " +
-                        "FROM sqlite_master " +
-                        "WHERE type = 'table'", null
+                " SELECT name " +
+                        " FROM sqlite_master " +
+                        " WHERE type = 'table' ", null
         );
 
         String result = "";
@@ -192,6 +193,17 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return count;
     }
+
+    public ArrayList<Integer> getIdList(Cursor cursor) {
+        ArrayList<Integer> results = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            results.add(Integer.parseInt(cursor.getString(0)));
+        }
+
+        return results;
+    }
+
 
     public String returnQueryStr(Cursor cursor, int getStrLength) {
         String result = "";

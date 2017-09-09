@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         final String MODEL_KEY = getResources().getString(R.string.model_key);
 
         Intent intent = new Intent(this, DetailsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(MODEL_KEY, notepadModel);
 
         startActivity(intent);
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void createNewNoteItemClick() {
         Intent intent = new Intent(this, RegisterActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 

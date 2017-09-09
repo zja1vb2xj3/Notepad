@@ -6,16 +6,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * ModificationNotepadActivity.class
  * 메모수정 Activity
  */
 public class ModifyActivity extends AppCompatActivity {
+    private static final String CLASSNAME = "ModifyActivity";
 
-    private Button modificationButton;
     private EditText modifyEditText;
 
     private DBHelper dbHelper;
@@ -25,12 +27,10 @@ public class ModifyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify);
-//        modificationButton = (Button) findViewById(R.id.modificationButton);
-//        modificationButton.setOnClickListener(this::modificationButtonClick);
+
         dbHelper = new DBHelper(getApplicationContext());
 
         modifyEditText = (EditText) findViewById(R.id.modifyEditText);
-        modifyEditText.setText("");
 
         final int textSize = getResources().getInteger(R.integer.noteTextSize);
         modifyEditText.setTextSize(textSize);
@@ -40,23 +40,36 @@ public class ModifyActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        String beforeModifyData = getModifyData();
+        Log.i(CLASSNAME, "onResume");
+        String beforeModifyData = null;
+
+        beforeModifyData = getModifyData();
+
         if(beforeModifyData != null){
+            Log.i("beforeModifyData", beforeModifyData);
             modifyEditText.setText(beforeModifyData);
+        }
+
+        else{
+            Toast.makeText(this, "beforeModifyData is null", Toast.LENGTH_SHORT).show();
         }
     }
 
+
     private String getModifyData() {
+        Log.i("getModifyData", "Operate");
         if (getIntent() != null) {
             final String MODEL_KEY = getResources().getString(R.string.model_key);
             Intent intent = getIntent();
             notepadModel = (NotepadModel)intent.getSerializableExtra(MODEL_KEY);
             String beforeModifyData = notepadModel.getNoteDatas().get(notepadModel.getDataPosition());
+
             return beforeModifyData;
         }
 
         return null;
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,22 +96,31 @@ public class ModifyActivity extends AppCompatActivity {
 
     private void updateDBHelperDataTable(){
         String beforeModifyData = notepadModel.getNoteDatas().get(notepadModel.getDataPosition());
+
         Log.i("beforeModifyData", beforeModifyData);
-        int getDataId = findIdFromDatabaseTable(beforeModifyData);
-        String wantToModifyData= modifyEditText.getText().toString();
-        dbHelper.updateDataTableRow(wantToModifyData, getDataId);
+
+        ArrayList<Integer> idList = findDataBaseTableRowId(beforeModifyData);
+
+        String wantToModifyData = modifyEditText.getText().toString();
+
+        for(int i=0; i<idList.size(); i++){
+            dbHelper.updateDataTableRow(wantToModifyData, idList.get(i));
+        }
 
         Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
-    private int findIdFromDatabaseTable(String selectedItemIndex) {
+    private ArrayList<Integer> findDataBaseTableRowId(String selectedItemIndex) {
         Log.i("selectedItemIndex", "/" + selectedItemIndex + "/");
-        int id = dbHelper.getDataTableRowId(selectedItemIndex);
-        Log.i("findid : ", String.valueOf(id));
+        ArrayList<Integer> idList = dbHelper.getDataTableRowId(selectedItemIndex);
+
+        for(int i=0; i<idList.size(); i++)
+        Log.i("findid : ", String.valueOf(idList.get(i)));
         dbHelper.selectDataTable();
 
-        return id;
+        return idList;
     }
 
 

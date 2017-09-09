@@ -32,6 +32,7 @@ public class DetailsActivity extends AppCompatActivity {
         getNotepadModel();
         ArrayList<Fragment> fragments = getFragments();
         setViewPager(fragments);
+        System.out.println("DetailsActivity onCreate notepadPosition: " + notepadModel.getDataPosition());
     }
 
     private ArrayList<Fragment> getFragments() {
@@ -57,6 +58,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 notepadModel.setDataPosition(position);
+                System.out.println("onPageSelectedPosition : " + notepadModel.getDataPosition());
             }
 
             @Override
@@ -110,7 +112,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void modifyNoteItemClick() {
         Intent intent = new Intent(this, ModifyActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         final String MODEL_KEY = getResources().getString(R.string.model_key);
 
         intent.putExtra(MODEL_KEY, notepadModel);
@@ -137,7 +139,6 @@ public class DetailsActivity extends AppCompatActivity {
          */
         @Override
         public int getCount() {
-            Log.i("getCount", String.valueOf(itemCount));
             return fragments.size();
         }
 

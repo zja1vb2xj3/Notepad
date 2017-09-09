@@ -42,8 +42,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.layoutInflater = LayoutInflater.from(context);
         this.datas = datas;
         this.resources = resources;
-
-        System.out.println("getDBIndex" + this.datas);
     }
 
     /**
