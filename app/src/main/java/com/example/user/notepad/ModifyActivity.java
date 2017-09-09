@@ -6,10 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 /**
  * ModificationNotepadActivity.class
@@ -18,7 +16,7 @@ import android.widget.Toast;
 public class ModifyActivity extends AppCompatActivity {
 
     private Button modificationButton;
-    private EditText detailedNote_EditText;
+    private EditText modifyEditText;
 
     private DBHelper dbHelper;
     private NotepadModel notepadModel;
@@ -27,10 +25,11 @@ public class ModifyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detailed_notepad);
+        setContentView(R.layout.activity_modify);
 //        modificationButton = (Button) findViewById(R.id.modificationButton);
 //        modificationButton.setOnClickListener(this::modificationButtonClick);
-        detailedNote_EditText = (EditText) findViewById(R.id.detailedNote_EditText);
+        dbHelper = new DBHelper(getApplicationContext());
+        modifyEditText = (EditText) findViewById(R.id.modifyEditText);
     }
 
     @Override

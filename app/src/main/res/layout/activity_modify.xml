@@ -4,22 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.notepad.ModificationNotepadActivity"
+    tools:context="com.example.user.notepad.ModifyActivity"
     android:weightSum="10">
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:text="수정완료"
-        android:id="@+id/modificationButton"
-        />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9.5"
-        android:id="@+id/detailedNote_EditText"
+        android:id="@+id/modifyEditText"
         android:gravity="top"/>
 
 </LinearLayout>
