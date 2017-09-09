@@ -1,4 +1,4 @@
-package com.example.user.notepad;
+package com.example.user.notepad.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +11,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.user.notepad.Database.DBHelper;
+import com.example.user.notepad.Model.NotepadModel;
+import com.example.user.notepad.R;
+import com.example.user.notepad.Adapter.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 

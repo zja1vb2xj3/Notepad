@@ -1,4 +1,4 @@
-package com.example.user.notepad;
+package com.example.user.notepad.Adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.user.notepad.R;
 
 import java.util.ArrayList;
 
@@ -33,12 +35,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ViewHolder viewHolder;
 
     private Resources resources;
+
     /**
      * ArrayList를 받는 생성자
+     *
      * @param context
      * @param datas
      */
-    RecyclerViewAdapter(Context context, ArrayList<String> datas, Resources resources) {
+    public RecyclerViewAdapter(Context context, ArrayList<String> datas, Resources resources) {
         this.layoutInflater = LayoutInflater.from(context);
         this.datas = datas;
         this.resources = resources;
@@ -91,7 +95,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      * RecyclerViewAdapter.class
      * RecyclerView 내의 모든 item view의 데이터를 관리
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private TextView dataTextView;
 
         public ViewHolder(View itemView) {
@@ -156,12 +160,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.onItemLongClickListener = onItemLongClickListener;
     }
 
-    interface OnItemClickListener {
-        void itemOnClick(String textViewStr, int position);
+    public interface OnItemClickListener {
+        public void itemOnClick(String textViewStr, int position);
     }
 
-    interface OnItemLongClickListener {
-        boolean itemLongClick(String textViewStr);
+    public interface OnItemLongClickListener {
+        public boolean itemLongClick(String textViewStr);
     }
 
 }

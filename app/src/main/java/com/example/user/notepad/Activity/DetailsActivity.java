@@ -1,4 +1,4 @@
-package com.example.user.notepad;
+package com.example.user.notepad.Activity;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -15,14 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.user.notepad.Model.NotepadModel;
+import com.example.user.notepad.R;
+
 import java.util.ArrayList;
 
 public class DetailsActivity extends AppCompatActivity {
     private NotepadModel notepadModel;
     private ViewPager viewPager;
     private PagerAdapter pagerAdapter;
-    private int itemCount;
-    private int itemPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,6 @@ public class DetailsActivity extends AppCompatActivity {
         if (getIntent() != null) {
             Intent intent = getIntent();
             notepadModel = (NotepadModel) intent.getSerializableExtra(MODEL_KEY);
-            itemCount = notepadModel.getNoteDatas().size();
         }
     }
 
@@ -127,7 +127,6 @@ public class DetailsActivity extends AppCompatActivity {
             super(fm);
             this.fragments = fragments;
         }
-
 
         @Override
         public Fragment getItem(int position) {

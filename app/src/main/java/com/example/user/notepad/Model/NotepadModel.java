@@ -1,4 +1,4 @@
-package com.example.user.notepad;
+package com.example.user.notepad.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

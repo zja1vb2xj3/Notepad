@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.notepad.DetailsActivity">
+    tools:context="com.example.user.notepad.Activity.DetailsActivity">
 
     <android.support.v4.view.ViewPager
         android:layout_width="wrap_content"

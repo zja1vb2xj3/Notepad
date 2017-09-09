@@ -1,4 +1,4 @@
-package com.example.user.notepad;
+package com.example.user.notepad.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.user.notepad.Database.DBHelper;
+import com.example.user.notepad.Model.NotepadModel;
+import com.example.user.notepad.R;
 
 import java.util.ArrayList;
 

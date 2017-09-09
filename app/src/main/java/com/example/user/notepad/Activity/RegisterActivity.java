@@ -1,4 +1,4 @@
-package com.example.user.notepad;
+package com.example.user.notepad.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.user.notepad.Database.DBHelper;
+import com.example.user.notepad.R;
 
 /**
  * RegisterNotepadActivity.class

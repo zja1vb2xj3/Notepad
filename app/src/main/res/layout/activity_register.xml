@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.notepad.RegisterActivity"
+    tools:context="com.example.user.notepad.Activity.RegisterActivity"
     android:weightSum="10">
 
     <EditText

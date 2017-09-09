@@ -1,4 +1,4 @@
-package com.example.user.notepad;
+package com.example.user.notepad.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -136,7 +136,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    private boolean deleteDataTableRow(String data) {
+    public boolean deleteDataTableRow(String data) {
         if (!data.equals("")) {
             System.out.println(data);
 
@@ -151,7 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
     }
 
-    void updateDataTableRow(String updateData, int position) {
+    public void updateDataTableRow(String updateData, int position) {
 
         String afterReplaceStr = getReplaceStr(updateData);
 
