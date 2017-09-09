@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/createNewNoteButton"
+        android:id="@+id/createNewNotepadItem"
         app:showAsAction="always"
-        android:title="메모생성"
+        android:title="@string/createNewNotepad"
         />
 </menu>

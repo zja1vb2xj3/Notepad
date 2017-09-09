@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -55,7 +56,9 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    /**삽입된 데이터 반환 */
+    /**
+     * 삽입된 데이터 반환
+     */
     public ArrayList<String> getDataTableRowDatas() {
 
         Cursor cursor = readableDatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
@@ -73,23 +76,36 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     int getDataTableRowId(String data) {
+        try {
+            String afterReplaceStr = getReplaceStr(data);
 
-        String replaceStr = data.replace(System.getProperty("line.separator"), "");
+            Log.i("replaceStr", afterReplaceStr + "/");
+            String sql =
+                            " Select id " +
+                            " From " + TABLE_NAME +
+                            " Where Data " +
+                            " Like '" + afterReplaceStr + "';";
 
-        String sql =
-                " Select id From "
-                        + TABLE_NAME +
-                        " Where Data Like '" +
-                        replaceStr + "';";
-        System.out.println("replaceStr"+replaceStr);
-        Cursor cursor = readableDatabase.rawQuery(sql, null);
+            Cursor cursor = readableDatabase.rawQuery(sql, null);
 
-        String idStr = "";
-        idStr = returnQueryStr(cursor, 0);
-        int id = Integer.parseInt(idStr);
+            String idStr = returnQueryStr(cursor, 0);
+            int id = Integer.parseInt(idStr);
+            System.out.println("findid" + id);
 
-        return id;
+            return id;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
     }
+
+    private String getReplaceStr(String beforeReplaceStr){
+        String afterReplaceStr = beforeReplaceStr.replace(System.getProperty("line.separator"), "");
+
+        return afterReplaceStr;
+    }
+
 
     //데이터 삽입
     public boolean insertDataTableRow(String data) {
@@ -108,7 +124,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public void dropTable() {
-        writableDatabase.execSQL("Drop Table If Exists "+ TABLE_NAME);
+        writableDatabase.execSQL("Drop Table If Exists " + TABLE_NAME);
     }
 
     public void createTable() {
@@ -131,15 +147,17 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.i(CLASS_NAME, "delete Sucess");
 
             return true;
-        }
-        else
+        } else
             return false;
     }
 
-    void updateDataTableRow(String data, int position) {
+    void updateDataTableRow(String updateData, int position) {
+
+        String afterReplaceStr = getReplaceStr(updateData);
+
         String sql =
                 " Update " + TABLE_NAME +
-                        " Set Data = " + " '" + data + "' " +
+                        " Set Data = " + " '" + afterReplaceStr + "' " +
                         " Where id = " + position;
         writableDatabase.execSQL(sql);
     }
@@ -155,7 +173,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //테이블 출력
     public void printAllTable() {
         Cursor cursor = writableDatabase.rawQuery(
-                        "SELECT name " +
+                "SELECT name " +
                         "FROM sqlite_master " +
                         "WHERE type = 'table'", null
         );
@@ -166,9 +184,9 @@ public class DBHelper extends SQLiteOpenHelper {
         System.out.println(result);
     }
 
-    public int getQueryCount(Cursor cursor){
+    public int getQueryCount(Cursor cursor) {
         int count = 0;
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             cursor.getString(0);
             count++;
         }

@@ -1,7 +1,6 @@
 package com.example.user.notepad;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -33,7 +32,6 @@ public class DetailsActivity extends AppCompatActivity {
         getNotepadModel();
         ArrayList<Fragment> fragments = getFragments();
         setViewPager(fragments);
-
     }
 
     private ArrayList<Fragment> getFragments() {
@@ -58,7 +56,7 @@ public class DetailsActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                itemPosition = position;
+                notepadModel.setDataPosition(position);
             }
 
             @Override
@@ -83,7 +81,7 @@ public class DetailsActivity extends AppCompatActivity {
     }//end setViewPager
 
     private void getNotepadModel() {
-        final String MODEL_KEY = "NotepadModel";
+        final String MODEL_KEY = getResources().getString(R.string.model_key);
 
         if (getIntent() != null) {
             Intent intent = getIntent();
@@ -103,20 +101,19 @@ public class DetailsActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if (id == R.id.modifyNoteButton) {
-            modifyNoteOptionButtonClick();
+        if (id == R.id.modifyNotepadItem) {
+            modifyNoteItemClick();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void modifyNoteOptionButtonClick() {
+    private void modifyNoteItemClick() {
         Intent intent = new Intent(this, ModifyActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        final String MODEL_KEY = getResources().getString(R.string.model_key);
 
-        notepadModel.setDataPosition(itemPosition);
-        final String MODLE_KEY = "NotepadModel";
-        intent.putExtra(MODLE_KEY, notepadModel);
+        intent.putExtra(MODEL_KEY, notepadModel);
         startActivity(intent);
     }
 

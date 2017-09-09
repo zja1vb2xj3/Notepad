@@ -21,7 +21,6 @@ public class ModifyActivity extends AppCompatActivity {
     private DBHelper dbHelper;
     private NotepadModel notepadModel;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +30,8 @@ public class ModifyActivity extends AppCompatActivity {
         dbHelper = new DBHelper(getApplicationContext());
 
         modifyEditText = (EditText) findViewById(R.id.modifyEditText);
+        modifyEditText.setText("");
+
         final int textSize = getResources().getInteger(R.integer.noteTextSize);
         modifyEditText.setTextSize(textSize);
 
@@ -47,9 +48,9 @@ public class ModifyActivity extends AppCompatActivity {
 
     private String getModifyData() {
         if (getIntent() != null) {
-            final String MODLE_KEY = "NotepadModel";
+            final String MODEL_KEY = getResources().getString(R.string.model_key);
             Intent intent = getIntent();
-            notepadModel = (NotepadModel)intent.getSerializableExtra(MODLE_KEY);
+            notepadModel = (NotepadModel)intent.getSerializableExtra(MODEL_KEY);
             String beforeModifyData = notepadModel.getNoteDatas().get(notepadModel.getDataPosition());
             return beforeModifyData;
         }
@@ -59,44 +60,46 @@ public class ModifyActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        getMenuInflater().inflate(R.menu.menu_modify, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.modifyNotepadCompleteItem){
+            modifyNotepadCompleteItemClick();
+        }
+
         return super.onOptionsItemSelected(item);
     }
-    //    private void modificationButtonClick(View view) {
-//        dbHelper = new DBHelper(this);
-//        //해당 id 찾음
-//
-//        int findId = findIdFromDatabaseTable(selectedItemIndex);
-//        if (findId == -1) {
-//            Toast.makeText(getApplicationContext(), "수정 오류", Toast.LENGTH_LONG).show();
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
-//        } else {
-//            String upDateTextStr = detailedNote_EditText.getText().toString();
-//            dbHelper.updateDataTableRow(upDateTextStr, findId);
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
-//            Toast.makeText(getApplicationContext(), "수정 성공", Toast.LENGTH_LONG).show();
-//        }
-//    }
-//
-//    //
-//    private int findIdFromDatabaseTable(String selectedItemIndex) {
-//        int id = 0;
-//        Log.i("selectedItemIndex", "/" + selectedItemIndex + "/");
-//        id = dbHelper.getDataTableRowId(selectedItemIndex);
-//        //id가 0이라면 데이터가 없음
-//        if (id == 0)
-//            return -1;
-//
-//        else
-//            return id;
-//
-//    }
+
+    private void modifyNotepadCompleteItemClick() {
+        dbHelper = new DBHelper(this);
+
+        updateDBHelperDataTable();
+    }
+
+    private void updateDBHelperDataTable(){
+        String beforeModifyData = notepadModel.getNoteDatas().get(notepadModel.getDataPosition());
+        Log.i("beforeModifyData", beforeModifyData);
+        int getDataId = findIdFromDatabaseTable(beforeModifyData);
+        String wantToModifyData= modifyEditText.getText().toString();
+        dbHelper.updateDataTableRow(wantToModifyData, getDataId);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private int findIdFromDatabaseTable(String selectedItemIndex) {
+        Log.i("selectedItemIndex", "/" + selectedItemIndex + "/");
+        int id = dbHelper.getDataTableRowId(selectedItemIndex);
+        Log.i("findid : ", String.valueOf(id));
+        dbHelper.selectDataTable();
+
+        return id;
+    }
+
 
 }

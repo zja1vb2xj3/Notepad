@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Notepad</string>
+    <string name="model_key">Model_Key</string>
+
+    <string name="createNewNotepad">메모생성</string>
+    <string name="modifyNotepad">메모수정</string>
+    <string name="modifyNotepadComplete">수정완료</string>
+    <string name="registerNotepad">메모등록</string>
 </resources>

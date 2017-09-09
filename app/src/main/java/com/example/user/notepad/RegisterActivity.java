@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,18 +15,20 @@ import android.widget.Toast;
  * 메모등록 Activity
  */
 public class RegisterActivity extends AppCompatActivity {
-    private Button noteRegister_Button;
     private EditText note_EditText = null;
     private DBHelper dbHelper;
     private final String CLASS_NAME = "NotepadActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         Log.i(CLASS_NAME, "onCreate");
+
+        final int noteTextSize = getResources().getInteger(R.integer.noteTextSize);
+
         note_EditText = (EditText) findViewById(R.id.note_EditText);
-        noteRegister_Button = (Button) findViewById(R.id.noteRegister_Button);
-        noteRegister_Button.setOnClickListener(this::noteRegister_ButtonClick);
+        note_EditText.setTextSize(noteTextSize);
 
         dbHelper = new DBHelper(this);
     }
@@ -36,7 +39,26 @@ public class RegisterActivity extends AppCompatActivity {
         note_EditText.setText("");
     }
 
-    private void noteRegister_ButtonClick(View view) {
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_register, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.registerNotepadItem){
+            registerNotepadItemClick();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void registerNotepadItemClick() {
         String memoData = String.valueOf(note_EditText.getText());
         Log.i(CLASS_NAME, memoData);
         //Pacelable 로 Main에 보내면서 MainActivity실행 후 RecyclerView에 데이터 추가됨
@@ -55,5 +77,6 @@ public class RegisterActivity extends AppCompatActivity {
             } else
                 Toast.makeText(getApplicationContext(), "메모등록실패", Toast.LENGTH_LONG).show();
         }
-    }//end 등록버튼 클릭
-}
+    }
+
+}//end RegisterActivity

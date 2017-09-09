@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private final String CLASS_NAME = "MainActivity";
-    private final int ModifyRequest = 1;
 
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
@@ -36,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         Log.i(CLASS_NAME, "onCreate");
 
         dbHelper = new DBHelper(this);
-
         dbHelper.createTable();
         dbHelper.selectDataTable();
 
@@ -133,11 +131,17 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /** 상세보기
+     *
+     *
+     */
     private void showDetailsNotepad(int selectedPosition) {
         notepadModel.setDataPosition(selectedPosition);
-        final String MODLE_KEY = "NotepadModel";
+
+        final String MODEL_KEY = getResources().getString(R.string.model_key);
+
         Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra(MODLE_KEY, notepadModel);
+        intent.putExtra(MODEL_KEY, notepadModel);
 
         startActivity(intent);
     }//end showDetailedNotepad
@@ -146,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 새로운 메모 생성하기
      */
-    private void createNewNoteOptionButtonClick() {
+    private void createNewNoteItemClick() {
         Intent intent = new Intent(this, RegisterActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
@@ -155,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -163,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if (id == R.id.createNewNoteButton) {
-            createNewNoteOptionButtonClick();
+        if (id == R.id.createNewNotepadItem) {
+            createNewNoteItemClick();
         }
 
         return super.onOptionsItemSelected(item);
