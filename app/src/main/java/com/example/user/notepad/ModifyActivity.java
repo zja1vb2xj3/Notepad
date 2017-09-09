@@ -35,22 +35,22 @@ public class ModifyActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getModifyData();
+        String beforeModifyData = getModifyData();
+        if(beforeModifyData != null){
+            modifyEditText.setText(beforeModifyData);
+        }
     }
 
-    private void getModifyData() {
+    private String getModifyData() {
         if (getIntent() != null) {
             final String MODLE_KEY = "NotepadModel";
             Intent intent = getIntent();
             notepadModel = (NotepadModel)intent.getSerializableExtra(MODLE_KEY);
-            Log.i("ModifyData", notepadModel.getNoteDatas().get(notepadModel.getDataPosition()));
+            String beforeModifyData = notepadModel.getNoteDatas().get(notepadModel.getDataPosition());
+            return beforeModifyData;
         }
-    }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        getModifyData();
+        return null;
     }
 
     @Override
