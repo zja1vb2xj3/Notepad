@@ -26,6 +26,7 @@ public class ModifyActivity extends AppCompatActivity {
 
     private DBHelper dbHelper;
     private NotepadModel notepadModel;
+    private String beforeModifyData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +38,8 @@ public class ModifyActivity extends AppCompatActivity {
         modifyEditText = (EditText) findViewById(R.id.modifyEditText);
 
         final int textSize = getResources().getInteger(R.integer.noteTextSize);
+
         modifyEditText.setTextSize(textSize);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i(CLASSNAME, "onResume");
-        String beforeModifyData = null;
 
         beforeModifyData = getModifyData();
 
@@ -59,6 +53,17 @@ public class ModifyActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        modifyEditText.setText(beforeModifyData);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        beforeModifyData = modifyEditText.getText().toString();
+    }
 
     private String getModifyData() {
         Log.i("getModifyData", "Operate");

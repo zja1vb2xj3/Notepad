@@ -20,6 +20,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText note_EditText = null;
     private DBHelper dbHelper;
     private final String CLASS_NAME = "NotepadActivity";
+    private String inputBuffer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +39,14 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        note_EditText.setText("");
+        note_EditText.setText(inputBuffer);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        inputBuffer = note_EditText.getText().toString();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
